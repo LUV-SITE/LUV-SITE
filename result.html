@@ -365,11 +365,6 @@ async function copyLink(){
 }
 function shareInstagram(){saveAsImage(); showToast('📸 이미지 저장 후 인스타에 올려보세요!');}
 function shareKakao(){
-  if(typeof Kakao==='undefined'||!Kakao.isInitialized()){
-    copyLink();
-    showToast('💬 링크를 복사했어요!');
-    return;
-  }
   Kakao.Share.sendDefault({
     objectType:'feed',
     content:{
@@ -377,15 +372,15 @@ function shareKakao(){
       description:data.title+' 💕 나도 테스트해봐!',
       imageUrl:'https://luv-site-kr.netlify.app/og.png',
       link:{
-        mobileWebUrl:location.href,
-        webUrl:location.href
+        mobileWebUrl:'https://luv-site-kr.netlify.app/mbti.html',
+        webUrl:'https://luv-site-kr.netlify.app/mbti.html'
       }
     },
     buttons:[{
       title:'나도 테스트하기 💘',
       link:{
-        mobileWebUrl:location.href,
-        webUrl:location.href
+        mobileWebUrl:'https://luv-site-kr.netlify.app/mbti.html',
+        webUrl:'https://luv-site-kr.netlify.app/mbti.html'
       }
     }]
   });
