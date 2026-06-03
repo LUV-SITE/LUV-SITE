@@ -3,550 +3,366 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>나의 MBTI 연애 유형 결과</title>
-  
-  <!-- SEO / 카카오·SNS 공유용 OG 태그 -->
-  <meta property="og:title" content="나의 MBTI 연애 유형은?">
-  <meta property="og:description" content="MBTI로 보는 나의 연애 스타일 테스트">
-  <meta property="og:image" content="https://yourdomain.com/og_default.png">
-  <meta property="og:url" content="https://yourdomain.com/result.html">
-  <meta name="twitter:card" content="summary_large_image">
-
-  <!-- html2canvas: 이미지 저장 기능 -->
+  <title>MBTI 궁합 결과 — LUV SITE</title>
+  <meta property="og:title" content="우리의 MBTI 궁합은?">
+  <meta property="og:description" content="LUV SITE에서 MBTI 궁합 테스트 해봐요!">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-
   <style>
-    :root {
-      --primary: #ff6b9d;
-      --primary-light: #fff0f5;
-      --primary-dark: #d63f7a;
-      --accent: #ff9f43;
-      --bg: #fafafa;
-      --card-bg: #ffffff;
-      --text: #2d2d2d;
-      --text-muted: #888;
-      --radius: 20px;
-      --radius-sm: 12px;
-      --shadow: 0 4px 20px rgba(255,107,157,0.12);
-      --max-width: 430px;
-    }
-
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-
-    body {
-      font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', -apple-system, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    .page-wrap {
-      width: 100%;
-      max-width: var(--max-width);
-      padding: 0 0 60px;
-    }
-
-    /* ── 헤더 ── */
-    .top-bar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 16px 20px;
-      position: sticky;
-      top: 0;
-      background: rgba(255,255,255,0.95);
-      backdrop-filter: blur(8px);
-      z-index: 100;
-      border-bottom: 1px solid #f0f0f0;
-    }
-    .top-bar .back-btn {
-      width: 36px; height: 36px;
-      border: none; background: #f5f5f5; border-radius: 50%;
-      font-size: 18px; cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-    }
-    .top-bar .site-name {
-      font-size: 15px; font-weight: 700;
-      background: linear-gradient(135deg, var(--primary), var(--accent));
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    }
-    .top-bar .share-icon {
-      width: 36px; height: 36px;
-      border: 1px solid #eee; background: white; border-radius: 50%;
-      font-size: 16px; cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-    }
-
-    /* ── 광고 슬롯 (상단) ── */
-    .ad-slot {
-      width: 100%;
-      background: #f5f5f5;
-      border: 1px dashed #ddd;
-      border-radius: var(--radius-sm);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--text-muted);
-      font-size: 12px;
-      margin: 0;
-      overflow: hidden;
-    }
-    .ad-slot-banner { height: 60px; margin: 8px 16px; }
-    .ad-slot-mid    { height: 100px; margin: 0 16px 16px; }
-    .ad-slot-native { min-height: 80px; margin: 0 16px 16px; }
-
-    /* ── 결과 카드 (저장 대상) ── */
-    #result-card {
-      margin: 12px 16px 0;
-      background: linear-gradient(135deg, #fff0f7 0%, #fff8f0 100%);
-      border-radius: var(--radius);
-      padding: 28px 24px 24px;
-      border: 1px solid rgba(255,107,157,0.15);
-      position: relative;
-      overflow: hidden;
-    }
-    #result-card::before {
-      content: '';
-      position: absolute; top: -40px; right: -40px;
-      width: 160px; height: 160px;
-      background: radial-gradient(circle, rgba(255,159,67,0.15), transparent 70%);
-      border-radius: 50%;
-    }
-
-    .result-type-badge {
-      display: inline-flex; align-items: center; gap: 6px;
-      background: var(--primary); color: white;
-      font-size: 12px; font-weight: 700;
-      padding: 5px 14px; border-radius: 100px;
-      margin-bottom: 14px;
-    }
-    .result-emoji { font-size: 42px; margin-bottom: 10px; display: block; }
-    .result-title {
-      font-size: 22px; font-weight: 800;
-      color: var(--text); line-height: 1.3;
-      margin-bottom: 8px;
-    }
-    .result-subtitle {
-      font-size: 14px; color: var(--primary-dark);
-      font-weight: 600; margin-bottom: 16px;
-    }
-    .result-desc {
-      font-size: 14px; color: #555; line-height: 1.8;
-      background: rgba(255,255,255,0.7);
-      border-radius: var(--radius-sm);
-      padding: 14px 16px;
-    }
-
-    /* ── 스펙트럼 바 ── */
-    .spectrum-section { margin: 16px 16px 0; }
-    .spectrum-section h3 {
-      font-size: 14px; font-weight: 700; color: var(--text-muted);
-      margin-bottom: 12px; letter-spacing: 0.5px;
-    }
-    .spectrum-item { margin-bottom: 12px; }
-    .spectrum-labels {
-      display: flex; justify-content: space-between;
-      font-size: 12px; color: var(--text-muted); margin-bottom: 4px;
-    }
-    .spectrum-bar {
-      height: 8px; background: #f0f0f0; border-radius: 100px; overflow: hidden;
-    }
-    .spectrum-fill {
-      height: 100%;
-      background: linear-gradient(90deg, var(--primary), var(--accent));
-      border-radius: 100px;
-      transition: width 1s cubic-bezier(.25,.8,.25,1);
-    }
-
-    /* ── 광고 슬롯 (중간) ── */
-
-    /* ── 공유/다시하기/저장 버튼 그룹 ── */
-    .action-section { margin: 16px 16px 0; }
-    .action-section h3 {
-      font-size: 13px; color: var(--text-muted); font-weight: 600;
-      text-align: center; margin-bottom: 12px;
-    }
-
-    .share-btns {
-      display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px;
-      margin-bottom: 12px;
-    }
-    .share-btn {
-      display: flex; flex-direction: column; align-items: center;
-      gap: 5px; padding: 12px 4px;
-      background: white; border: 1px solid #f0f0f0; border-radius: var(--radius-sm);
-      cursor: pointer; font-size: 11px; color: var(--text-muted);
-      transition: all 0.15s; font-family: inherit;
-    }
-    .share-btn:active { transform: scale(0.95); background: #f9f9f9; }
-    .share-btn .icon { font-size: 26px; }
-
-    .bottom-btns {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
-      margin-bottom: 8px;
-    }
-    .btn-primary {
-      padding: 14px; border: none;
-      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-      color: white; border-radius: var(--radius-sm);
-      font-size: 14px; font-weight: 700; cursor: pointer;
-      font-family: inherit; transition: opacity 0.15s;
-    }
-    .btn-primary:active { opacity: 0.85; }
-    .btn-secondary {
-      padding: 14px; border: 1.5px solid var(--primary);
-      background: white; color: var(--primary);
-      border-radius: var(--radius-sm);
-      font-size: 14px; font-weight: 700; cursor: pointer;
-      font-family: inherit; transition: all 0.15s;
-    }
-    .btn-secondary:active { background: var(--primary-light); }
-    .btn-save {
-      width: 100%; padding: 14px; border: 1.5px solid #e0e0e0;
-      background: white; color: var(--text);
-      border-radius: var(--radius-sm);
-      font-size: 14px; font-weight: 600; cursor: pointer;
-      font-family: inherit; display: flex; align-items: center;
-      justify-content: center; gap: 6px; transition: all 0.15s;
-    }
-    .btn-save:active { background: #f5f5f5; }
-
-    /* ── 추천 테스트 ── */
-    .recommend-section { margin: 20px 16px 0; }
-    .recommend-section h3 {
-      font-size: 16px; font-weight: 800; color: var(--text); margin-bottom: 14px;
-    }
-    .recommend-grid {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
-    }
-    .recommend-card {
-      background: white; border: 1px solid #f0f0f0;
-      border-radius: var(--radius-sm); padding: 14px 12px;
-      cursor: pointer; transition: all 0.15s; text-decoration: none;
-    }
-    .recommend-card:active { transform: scale(0.97); border-color: var(--primary); }
-    .recommend-card .rc-emoji { font-size: 28px; margin-bottom: 6px; display: block; }
-    .recommend-card .rc-title {
-      font-size: 13px; font-weight: 700; color: var(--text);
-      line-height: 1.4; margin-bottom: 4px;
-    }
-    .recommend-card .rc-sub { font-size: 11px; color: var(--text-muted); }
-
-    /* ── 토스트 알림 ── */
-    #toast {
-      position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%) translateY(20px);
-      background: rgba(0,0,0,0.8); color: white;
-      padding: 10px 22px; border-radius: 100px; font-size: 13px;
-      opacity: 0; transition: all 0.3s; pointer-events: none; z-index: 9999;
-      white-space: nowrap;
-    }
-    #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-
-    /* 이미지 저장 로딩 */
-    #save-overlay {
-      display: none; position: fixed; inset: 0;
-      background: rgba(0,0,0,0.5); z-index: 9999;
-      align-items: center; justify-content: center; flex-direction: column; gap: 14px;
-    }
-    #save-overlay.show { display: flex; }
-    #save-overlay span { color: white; font-size: 15px; font-weight: 600; }
-
-    /* 모바일 하단 공간 */
-    .bottom-spacer { height: 40px; }
+    :root{--pink:#ff6b9d;--pink-dark:#d63f7a;--pink-pale:#fff0f5;--peach:#ffb347;--blue:#6b9dff;--blue-pale:#f0f4ff;--bg:#fff8fb;--text:#1a1a2e;--muted:#999;--card:#ffffff;--max:430px;--radius:20px;}
+    *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+    body{font-family:'Gowun Dodum','Apple SD Gothic Neo',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column;align-items:center;}
+    .wrap{width:100%;max-width:var(--max);padding-bottom:60px;}
+    .top-bar{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;background:rgba(255,255,255,0.95);backdrop-filter:blur(8px);position:sticky;top:0;z-index:100;border-bottom:1px solid #ffeef5;}
+    .back-btn{width:36px;height:36px;border-radius:50%;border:none;background:#f5f5f5;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+    .top-title{font-size:15px;font-weight:700;}
+    .share-icon{width:36px;height:36px;border-radius:50%;border:1px solid #eee;background:white;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+    .ad-slot{background:#f5f5f5;border:1px dashed #e0e0e0;border-radius:12px;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:12px;overflow:hidden;}
+    .ad-top{height:60px;margin:8px 16px 0;}
+    .ad-mid{height:90px;margin:16px;}
+    .ad-native{min-height:80px;margin:0 16px 16px;}
+    #result-card{margin:16px;border-radius:var(--radius);background:linear-gradient(135deg,#fff0f7 0%,#f0f4ff 100%);border:1.5px solid rgba(255,107,157,0.2);padding:28px 22px 24px;position:relative;overflow:hidden;}
+    #result-card::before{content:'';position:absolute;top:-30px;right:-30px;width:120px;height:120px;background:radial-gradient(circle,rgba(255,179,71,0.2),transparent 70%);border-radius:50%;}
+    .mbti-pair{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:16px;}
+    .mbti-tag{font-size:18px;font-weight:700;padding:6px 16px;border-radius:100px;}
+    .mbti-tag.me{background:var(--pink-pale);color:var(--pink);}
+    .mbti-tag.you{background:var(--blue-pale);color:var(--blue);}
+    .score-wrap{display:flex;flex-direction:column;align-items:center;margin-bottom:18px;}
+    .score-circle{width:110px;height:110px;border-radius:50%;background:white;border:4px solid var(--pink);display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 6px 24px rgba(255,107,157,0.2);margin-bottom:8px;}
+    .score-num{font-size:38px;font-weight:700;background:linear-gradient(135deg,var(--pink),var(--peach));-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1;}
+    .score-label{font-size:13px;color:var(--muted);}
+    .score-grade{font-size:16px;font-weight:700;color:var(--text);}
+    .result-title{font-size:20px;font-weight:700;text-align:center;line-height:1.4;margin-bottom:12px;}
+    .result-desc{font-size:14px;color:#555;line-height:1.9;text-align:center;background:rgba(255,255,255,0.7);border-radius:14px;padding:14px 16px;}
+    .tip-section{margin:0 16px 12px;}
+    .tip-card{background:white;border-radius:var(--radius);border:1.5px solid #ffe0ec;padding:18px 20px;}
+    .tip-title{font-size:14px;font-weight:700;margin-bottom:12px;}
+    .tip-item{display:flex;gap:10px;margin-bottom:10px;font-size:13px;color:#555;line-height:1.7;}
+    .tip-num{background:var(--pink);color:white;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;margin-top:1px;}
+    .analysis-section{margin:0 16px 12px;}
+    .analysis-card{background:white;border-radius:var(--radius);border:1.5px solid #ffe0ec;padding:18px 20px;}
+    .analysis-title{font-size:14px;font-weight:700;margin-bottom:14px;}
+    .bar-item{margin-bottom:12px;}
+    .bar-labels{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:5px;}
+    .bar-track{height:8px;background:#f0f0f0;border-radius:100px;overflow:hidden;}
+    .bar-fill{height:100%;background:linear-gradient(90deg,var(--pink),var(--peach));border-radius:100px;width:0;transition:width 1.2s cubic-bezier(.25,.8,.25,1);}
+    .action-section{margin:0 16px;}
+    .share-label{font-size:13px;color:var(--muted);text-align:center;font-weight:600;margin-bottom:12px;}
+    .share-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px;}
+    .share-btn{display:flex;flex-direction:column;align-items:center;gap:5px;padding:12px 4px;background:white;border:1px solid #f0f0f0;border-radius:14px;cursor:pointer;font-size:11px;color:var(--muted);transition:all 0.15s;font-family:inherit;}
+    .share-btn:active{transform:scale(0.94);}
+    .share-btn .icon{font-size:26px;}
+    .btn-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;}
+    .btn-primary{padding:14px;border:none;background:linear-gradient(135deg,var(--pink),var(--pink-dark));color:white;border-radius:14px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;}
+    .btn-primary:active{opacity:0.85;}
+    .btn-secondary{padding:14px;border:1.5px solid var(--pink);background:white;color:var(--pink);border-radius:14px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;}
+    .btn-save{width:100%;padding:14px;border:1.5px solid #e0e0e0;background:white;color:var(--text);border-radius:14px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:6px;}
+    .btn-save:active{background:#f5f5f5;}
+    .recommend-section{margin:16px 16px 0;}
+    .rec-title{font-size:16px;font-weight:700;margin-bottom:12px;}
+    .rec-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+    .rec-card{background:white;border:1px solid #f0f0f0;border-radius:14px;padding:14px 12px;cursor:pointer;text-decoration:none;color:inherit;display:block;}
+    .rec-card:active{transform:scale(0.97);border-color:var(--pink);}
+    .rec-emoji{font-size:26px;margin-bottom:6px;display:block;}
+    .rec-name{font-size:13px;font-weight:700;margin-bottom:3px;line-height:1.3;}
+    .rec-sub{font-size:11px;color:var(--muted);}
+    #toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);background:rgba(0,0,0,0.8);color:white;padding:10px 22px;border-radius:100px;font-size:13px;opacity:0;transition:all 0.3s;pointer-events:none;z-index:9999;white-space:nowrap;}
+    #toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+    #save-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:9999;align-items:center;justify-content:center;flex-direction:column;gap:14px;}
+    #save-overlay.show{display:flex;}
+    #save-overlay span{color:white;font-size:15px;font-weight:600;}
+    @keyframes spin{to{transform:rotate(360deg);}}
+    .loading{text-align:center;padding:60px 20px;font-size:32px;animation:hb 1s ease-in-out infinite;}
+    @keyframes hb{0%,100%{transform:scale(1);}50%{transform:scale(1.2);}}
   </style>
 </head>
 <body>
-<div class="page-wrap">
-
-  <!-- 헤더 -->
+<div class="wrap">
   <div class="top-bar">
-    <button class="back-btn" onclick="history.back()">←</button>
-    <span class="site-name">✨ 나의 유형 테스트</span>
-    <button class="share-icon" onclick="shareKakao()">📤</button>
+    <button class="back-btn" onclick="location.href='mbti.html'">←</button>
+    <span class="top-title">💑 MBTI 궁합 결과</span>
+    <button class="share-icon" onclick="copyLink()">📤</button>
   </div>
-
-  <!-- 광고 슬롯 ① 상단 배너 (애드센스 or 쿠팡파트너스 교체 위치) -->
-  <div class="ad-slot ad-slot-banner" id="ad-top">
-    <!-- 
-      [광고 교체 방법]
-      1. 쿠팡파트너스: 아래 주석 해제 후 발급받은 코드 붙여넣기
-      2. 구글 애드센스 승인 후: <ins class="adsbygoogle" ...> 코드로 교체
-    -->
-    <!-- 쿠팡파트너스 예시:
-    <script src="https://ads-partners.coupang.com/g.js"></script>
-    <script>
-      new PartnerCoupang.G({"id":XXXXXX,"template":"banner","trackingCode":"AF_XXXX","width":"320","height":"50"});
-    </script>
-    -->
-    📢 광고 영역 (320×50)
-  </div>
-
-  <!-- 결과 카드 (이미지 저장 대상) -->
-  <div id="result-card">
-    <div class="result-type-badge">💝 나의 연애 유형</div>
-    <span class="result-emoji">🌙</span>
-    <div class="result-title" id="result-title">감성 충만한 낭만주의자</div>
-    <div class="result-subtitle" id="result-mbti">INFP형 연애 스타일</div>
-    <div class="result-desc" id="result-desc">
-      당신은 깊은 감성과 풍부한 상상력으로 연애하는 타입이에요. 
-      표면적인 것보다 감정적 연결을 중요시하고, 상대방을 이상화하는 경향이 있어요. 
-      진심 어린 관계를 원하지만 때로는 혼자만의 시간도 필요한 사람이에요. 💕
-    </div>
-  </div>
-
-  <!-- 스펙트럼 -->
-  <div class="spectrum-section">
-    <h3>나의 연애 성향 분석</h3>
-    <div class="spectrum-item">
-      <div class="spectrum-labels"><span>감성적 🌸</span><span>이성적 🧠</span></div>
-      <div class="spectrum-bar"><div class="spectrum-fill" id="bar1" style="width:0%"></div></div>
-    </div>
-    <div class="spectrum-item">
-      <div class="spectrum-labels"><span>표현적 💬</span><span>내성적 🌿</span></div>
-      <div class="spectrum-bar"><div class="spectrum-fill" id="bar2" style="width:0%"></div></div>
-    </div>
-    <div class="spectrum-item">
-      <div class="spectrum-labels"><span>자유로운 🦋</span><span>안정적 🏡</span></div>
-      <div class="spectrum-bar"><div class="spectrum-fill" id="bar3" style="width:0%"></div></div>
-    </div>
-  </div>
-
-  <!-- 광고 슬롯 ② 중간 (결과 + 공유 사이 — 가장 고수익 위치) -->
-  <div class="ad-slot ad-slot-mid" id="ad-mid" style="margin-top:16px;">
-    <!-- 
-      이 위치가 CTR이 가장 높음 (결과 확인 후 스크롤하는 지점)
-      애드센스: 300x100 or 반응형
-    -->
-    📢 광고 영역 (중간 — 고수익 위치)
-  </div>
-
-  <!-- 공유 / 저장 / 다시하기 버튼 -->
-  <div class="action-section">
-    <h3>결과 공유하기</h3>
-    
-    <div class="share-btns">
-      <button class="share-btn" onclick="shareKakao()">
-        <span class="icon">💬</span>카카오
-      </button>
-      <button class="share-btn" onclick="shareInstagram()">
-        <span class="icon">📸</span>인스타
-      </button>
-      <button class="share-btn" onclick="shareX()">
-        <span class="icon">🐦</span>X
-      </button>
-      <button class="share-btn" onclick="copyLink()">
-        <span class="icon">🔗</span>링크복사
-      </button>
+  <div class="ad-slot ad-top">📢 광고 영역</div>
+  <div class="loading" id="loading">💗</div>
+  <div id="content" style="display:none;">
+    <div id="result-card">
+      <div class="mbti-pair">
+        <span class="mbti-tag me" id="tag-me">?</span>
+        <span style="font-size:20px;">💗</span>
+        <span class="mbti-tag you" id="tag-you">?</span>
+      </div>
+      <div class="score-wrap">
+        <div class="score-circle">
+          <span class="score-num" id="score-num">0</span>
+          <span class="score-label">점</span>
+        </div>
+        <span class="score-grade" id="score-grade"></span>
+      </div>
+      <div class="result-title" id="result-title"></div>
+      <div class="result-desc" id="result-desc"></div>
     </div>
 
-    <div class="bottom-btns">
-      <button class="btn-primary" onclick="restartTest()">🔄 다시하기</button>
-      <button class="btn-secondary" onclick="goHome()">🏠 다른 테스트</button>
+    <div class="analysis-section">
+      <div class="analysis-card">
+        <div class="analysis-title">📊 궁합 상세 분석</div>
+        <div class="bar-item">
+          <div class="bar-labels"><span>소통 케미</span><span id="v1">0%</span></div>
+          <div class="bar-track"><div class="bar-fill" id="b1"></div></div>
+        </div>
+        <div class="bar-item">
+          <div class="bar-labels"><span>감정 교류</span><span id="v2">0%</span></div>
+          <div class="bar-track"><div class="bar-fill" id="b2"></div></div>
+        </div>
+        <div class="bar-item">
+          <div class="bar-labels"><span>가치관 일치</span><span id="v3">0%</span></div>
+          <div class="bar-track"><div class="bar-fill" id="b3"></div></div>
+        </div>
+        <div class="bar-item">
+          <div class="bar-labels"><span>장기 지속력</span><span id="v4">0%</span></div>
+          <div class="bar-track"><div class="bar-fill" id="b4"></div></div>
+        </div>
+      </div>
     </div>
 
-    <button class="btn-save" onclick="saveAsImage()">
-      📥 이미지로 저장하기
-    </button>
-  </div>
+    <div class="tip-section">
+      <div class="tip-card">
+        <div class="tip-title">💡 우리 관계 꿀팁</div>
+        <div id="tips-wrap"></div>
+      </div>
+    </div>
 
-  <!-- 광고 슬롯 ③ 네이티브형 (추천 테스트 위) -->
-  <div class="ad-slot ad-slot-native" id="ad-native" style="margin-top:16px;">
-    <!-- 
-      네이티브 광고 or 쿠팡 상품 추천
-      콘텐츠처럼 보여서 클릭률 높음
-    -->
-    📢 네이티브 광고 영역
-  </div>
+    <div class="ad-slot ad-mid">📢 광고 영역 (고수익)</div>
 
-  <!-- 추천 테스트 -->
-  <div class="recommend-section">
-    <h3>🎯 이런 테스트도 해보세요</h3>
-    <div class="recommend-grid" id="recommend-grid">
-      <!-- JS로 동적 삽입 -->
+    <div class="action-section">
+      <div class="share-label">결과 공유하기 💌</div>
+      <div class="share-grid">
+        <button class="share-btn" onclick="copyLink()"><span class="icon">💬</span>카카오</button>
+        <button class="share-btn" onclick="shareInstagram()"><span class="icon">📸</span>인스타</button>
+        <button class="share-btn" onclick="shareX()"><span class="icon">🐦</span>X</button>
+        <button class="share-btn" onclick="copyLink()"><span class="icon">🔗</span>링크복사</button>
+      </div>
+      <div class="btn-row">
+        <button class="btn-primary" onclick="location.href='mbti.html'">🔄 다시하기</button>
+        <button class="btn-secondary" onclick="location.href='index.html'">🏠 다른 테스트</button>
+      </div>
+      <button class="btn-save" onclick="saveAsImage()">📥 이미지로 저장하기</button>
+    </div>
+
+    <div class="ad-slot ad-native" style="margin-top:16px;">📢 네이티브 광고</div>
+
+    <div class="recommend-section">
+      <div class="rec-title">🎯 이런 테스트도 해보세요</div>
+      <div class="rec-grid">
+        <a class="rec-card" href="mbti.html">
+          <span class="rec-emoji">💑</span>
+          <div class="rec-name">다른 MBTI로 궁합 보기</div>
+          <div class="rec-sub">조합 바꿔서 다시 테스트</div>
+        </a>
+        <a class="rec-card" href="index.html">
+          <span class="rec-emoji">✨</span>
+          <div class="rec-name">다른 테스트 하러가기</div>
+          <div class="rec-sub">더 많은 테스트 보기</div>
+        </a>
+      </div>
     </div>
   </div>
-
-  <div class="bottom-spacer"></div>
 </div>
-
-<!-- 토스트 -->
-<div id="toast">✅ 링크가 복사되었어요!</div>
-
-<!-- 저장 로딩 오버레이 -->
+<div id="toast"></div>
 <div id="save-overlay">
   <div style="width:48px;height:48px;border:3px solid rgba(255,255,255,0.3);border-top-color:white;border-radius:50%;animation:spin 0.8s linear infinite;"></div>
   <span>이미지 저장 중...</span>
 </div>
 
-<style>
-  @keyframes spin { to { transform: rotate(360deg); } }
-</style>
-
 <script>
-// ─────────────────────────────────────
-// 결과 데이터 (URL 파라미터로 받아서 처리)
-// ─────────────────────────────────────
-const RESULTS = {
-  INFP: {
-    emoji: '🌙', title: '감성 충만한 낭만주의자', sub: 'INFP형 연애 스타일',
-    desc: '당신은 깊은 감성과 풍부한 상상력으로 연애하는 타입이에요. 표면적인 것보다 감정적 연결을 중요시하고, 상대방을 이상화하는 경향이 있어요. 진심 어린 관계를 원하지만 때로는 혼자만의 시간도 필요한 사람이에요. 💕',
-    bars: [75, 30, 60]
-  },
-  ENTJ: {
-    emoji: '🔥', title: '열정 넘치는 리더형 연애', sub: 'ENTJ형 연애 스타일',
-    desc: '당신은 목표 지향적이고 열정적인 연애를 하는 타입이에요. 관계에서도 주도권을 쥐는 편이며, 상대방을 성장시키려는 따뜻한 마음이 있어요.',
-    bars: [40, 80, 35]
-  },
-  ENFP: {
-    emoji: '✨', title: '에너지 넘치는 설레임 주의자', sub: 'ENFP형 연애 스타일',
-    desc: '새로운 연애에 온 마음을 쏟는 타입! 설레임을 먹고 사는 당신은 상대를 기쁘게 하는 아이디어가 넘쳐나요.',
-    bars: [85, 70, 75]
-  },
+// =====================================================
+// MBTI 궁합 데이터 — 인지기능 기반 조사 정리
+// 형식: 'A-B': {score, title, desc, bars:[소통,감정,가치관,지속력], tips:[]}
+// A-B 와 B-A 중복 방지: 알파벳 순 정렬 (ENFJ-INFP 등)
+// =====================================================
+const COMPAT = {
+
+  // NT (분석가) 조합
+  'ENFP-INTJ':{score:93,title:'서로를 완성시키는 운명적 만남',desc:'INTJ의 전략적 깊이와 ENFP의 창의적 에너지가 완벽하게 맞물려요. 서로의 약점을 채워주며 함께 성장하는 최고의 조합이에요. 💫',bars:[90,88,92,95],tips:['INTJ는 가끔 즉흥적인 ENFP의 아이디어에 귀 기울여보세요','ENFP는 INTJ의 혼자만의 시간을 존중해주세요','둘 다 깊은 대화를 좋아하니 감정도 솔직하게 나눠보세요']},
+  'ENTP-INFJ':{score:92,title:'직관으로 통하는 환상의 케미',desc:'ENTP의 넘치는 아이디어와 INFJ의 깊은 통찰력이 만나 대화가 끝나지 않는 커플이에요. 서로를 통해 세계관이 넓어져요. ✨',bars:[95,85,90,90],tips:['INFJ의 감정을 논쟁으로 이기려 하지 말고 공감해주세요','ENTP는 INFJ에게 혼자만의 충전 시간을 줘야 해요','둘 다 미래 지향적이라 함께 꿈꾸는 시간을 자주 가져보세요']},
+  'ENTJ-INTP':{score:88,title:'지적 시너지가 폭발하는 커플',desc:'ENTJ의 실행력과 INTP의 분석력이 합쳐져 뭐든 해낼 것 같은 파워 커플이에요. 서로의 논리를 존중하는 관계예요. 🧠',bars:[90,70,88,85],tips:['ENTJ는 INTP의 느린 결정 속도를 재촉하지 마세요','INTP는 ENTJ의 계획에 더 적극적으로 참여해보세요','감정 표현이 서툰 둘, 먼저 다가가는 쪽이 이겨요']},
+  'ENTP-INTJ':{score:88,title:'서로를 날카롭게 벼려주는 사이',desc:'지적 자극이 넘치는 최강 케미예요. 논쟁도 사랑의 언어가 되는 두 분이에요. 🔥',bars:[92,75,85,88],tips:['토론이 싸움으로 번지지 않도록 감정선을 지켜요','INTJ의 계획을 ENTP가 흔들면 스트레스가 될 수 있어요','지적 자극을 데이트에 활용하면 더욱 깊어지는 관계']},
+
+  // NF (외교관) 조합
+  'ENFJ-INFP':{score:95,title:'따뜻함으로 물드는 완벽한 조화',desc:'INFP의 섬세한 감성과 ENFJ의 따뜻한 리더십이 만나 세상에서 가장 아름다운 연애를 만들어요. 서로를 이해하고 성장시키는 최고의 파트너예요. 🌸',bars:[88,95,92,95],tips:['ENFJ는 INFP에게 자신의 의견을 강요하지 말아요','INFP는 ENFJ의 노력을 말로 표현해주세요','감정 교류가 풍부한 만큼 갈등도 감정적으로 해결해요']},
+  'ENFP-INFJ':{score:95,title:'우주가 맺어준 소울메이트',desc:'서로의 부족한 부분을 완벽하게 채워주는 환상의 커플이에요. ENFP의 에너지와 INFJ의 깊이가 만나 매일이 특별해요. 💫',bars:[98,97,95,92],tips:['INFJ의 직관을 ENFP가 믿고 따라가면 좋아요','ENFP는 INFJ의 희귀한 감정 개방을 소중히 여겨요','둘 다 이상적이라 현실적인 부분도 함께 챙겨요']},
+  'ENFJ-INFJ':{score:87,title:'깊은 이해로 연결된 두 영혼',desc:'둘 다 타인을 위하는 마음이 크고 직관이 발달했어요. 말하지 않아도 서로를 이해하는 신비로운 연결이 있어요. 🌌',bars:[85,92,88,85],tips:['서로 너무 배려하다가 정작 자신의 감정을 숨기지 말아요','ENFJ가 주도하는 경향을 INFJ가 편하게 조율해보세요','함께하는 의미 있는 활동이 관계를 더 깊게 해요']},
+  'ENFP-ENFJ':{score:88,title:'따뜻함과 자유가 만나는 환상 케미',desc:'ENFJ의 따뜻한 리더십과 ENFP의 자유로운 창의성이 만나 빛나는 관계예요. 주변까지 행복하게 만드는 커플이에요. ✨',bars:[90,88,85,88],tips:['둘 다 외향적이라 혼자만의 시간도 의도적으로 챙겨요','ENFP의 즉흥성을 ENFJ가 부드럽게 받아줘야 해요','갈등을 회피하지 말고 솔직하게 대화로 풀어요']},
+  'INFJ-INFP':{score:86,title:'감성과 이상이 만나는 아름다운 사이',desc:'둘 다 깊은 감성과 높은 이상을 가져요. 서로의 내면 세계를 아름답게 채워주는 관계예요. 🌸',bars:[82,92,88,84],tips:['둘 다 갈등을 피하는 성향, 문제는 용기 내어 말해요','INFJ의 직관적 판단을 INFP가 신뢰해주면 좋아요','함께 예술이나 창작 활동을 하면 더 깊어지는 관계']},
+
+  // SJ (관리자) 조합
+  'ESTJ-ISFJ':{score:84,title:'든든하고 따뜻한 완벽 조합',desc:'ESTJ의 실행력과 ISFJ의 따뜻함이 만나 탄탄하고 신뢰로운 관계를 만들어요. 함께라면 어떤 어려움도 이겨낼 수 있어요. 💪',bars:[82,80,88,90],tips:['ESTJ는 ISFJ의 감정적 니즈를 챙겨주세요','ISFJ는 ESTJ에게 의견을 더 적극적으로 표현해봐요','안정적인 루틴을 함께 만들어가면 관계가 더 단단해져요']},
+  'ESFJ-ISTJ':{score:86,title:'믿음직한 인생 동반자',desc:'안정적이고 헌신적인 두 분의 만남이에요. 책임감과 신뢰를 바탕으로 탄탄하게 쌓아가는 관계예요. 🏡',bars:[80,85,90,92],tips:['ISTJ는 ESFJ의 감정 표현에 더 적극적으로 반응해줘요','ESFJ는 ISTJ의 혼자만의 공간을 존중해요','계획을 함께 세우고 실행하면 신뢰가 깊어져요']},
+  'ISTJ-ISTJ':{score:76,title:'신뢰와 안정으로 쌓아가는 관계',desc:'둘 다 책임감 있고 믿을 수 있어요. 비슷한 가치관으로 안정적인 관계를 만들지만 감정 표현을 늘려가는 노력이 필요해요. 🏛️',bars:[72,65,85,80],tips:['비슷한 사람끼리 자극이 없을 수 있어요, 새로운 경험에 도전해봐요','감정 표현을 의식적으로 자주 해주면 훨씬 친밀해져요','서로의 단점도 솔직하게 이야기할 수 있는 관계를 만들어요']},
+  'ESFJ-ESFJ':{score:78,title:'따뜻함이 넘치는 행복한 커플',desc:'둘 다 따뜻하고 사교적이에요. 서로를 아끼며 주변까지 밝게 만드는 커플이에요. 💕',bars:[80,85,78,75],tips:['둘 다 갈등을 싫어해서 문제를 쌓아두기 쉬워요','상대의 감정에 과하게 의존하지 않도록 해요','함께하는 사교 활동이 관계를 더 활기차게 해줘요']},
+  'ISFJ-ISFJ':{score:78,title:'따뜻한 안정감이 넘치는 관계',desc:'둘 다 따뜻하고 헌신적이에요. 서로를 아끼며 평화로운 가정을 만들어가는 커플이에요. 🏡',bars:[75,82,80,78],tips:['서로 너무 배려하다 정작 자신을 잃지 않도록 해요','새로운 경험을 함께 도전하면 관계에 활기가 생겨요','갈등이 생기면 참지 말고 부드럽게 표현해봐요']},
+
+  // SP (탐험가) 조합
+  'ESTP-ISTP':{score:78,title:'행동으로 통하는 두 사람',desc:'둘 다 현실적이고 즉흥적이에요. 함께라면 새로운 모험을 즐기는 활기찬 관계예요. ⚡',bars:[80,65,78,78],tips:['감정 표현이 부족한 둘, 의식적으로 애정을 표현해봐요','미래 계획도 가끔 함께 이야기해보세요','현재를 즐기는 것도 좋지만 장기적인 비전도 나눠봐요']},
+  'ESFP-ISFP':{score:80,title:'자유로운 두 감성인의 만남',desc:'둘 다 감성적이고 자유로워요. 서로를 있는 그대로 받아들이는 따뜻한 관계예요. 🦋',bars:[78,82,76,78],tips:['자유를 사랑하는 둘, 서로의 독립성을 존중해요','현실적인 계획을 함께 세우는 연습을 해봐요','감성적인 이벤트로 서로를 표현하면 더 깊어져요']},
+  'ESTP-ESFP':{score:80,title:'활기차고 즐거운 두 사람',desc:'둘 다 외향적이고 현재를 즐겨요. 함께라면 매일이 파티 같은 즐거운 커플이에요. 🎉',bars:[82,75,78,80],tips:['흥분이 식었을 때도 관계를 유지하는 노력이 필요해요','재미만 추구하다 깊은 감정 교류를 놓치지 않도록 해요','함께 새로운 경험을 계속 만들어가면 오래가는 관계']},
+  'ISFP-ISFP':{score:76,title:'감성으로 가득 찬 두 예술가',desc:'둘 다 섬세하고 감성적이에요. 서로의 감정을 아름답게 나누는 따뜻한 관계예요. 🎨',bars:[74,80,76,75],tips:['갈등을 회피하지 말고 감정을 표현하는 연습을 해요','서로의 창작 활동을 응원하고 공유하면 더 깊어져요','현실적인 부분을 함께 챙기는 노력이 필요해요']},
+
+  // NT-NF 교차 조합
+  'ENFJ-INTJ':{score:80,title:'비전을 함께 그리는 파트너',desc:'INTJ의 전략과 ENFJ의 리더십이 만나 서로의 강점을 살려주는 멋진 팀이에요. 🎯',bars:[80,78,82,78],tips:['INTJ는 ENFJ의 감정 표현에 진심으로 반응해줘요','ENFJ는 INTJ의 독립적인 성향을 존중해봐요','서로의 강점이 달라 협력하면 엄청난 시너지가 나요']},
+  'ENFP-INTP':{score:84,title:'자유로운 영혼의 지적 탐험',desc:'함께라면 세상 모든 게 흥미로워지는 두 사람이에요. 에너지 넘치는 ENFP와 깊이 있는 INTP의 환상 조합! 🎪',bars:[86,80,82,84],tips:['INTP의 논리적인 면을 ENFP가 흥미롭게 받아들여요','ENFP는 INTP에게 감정적 지지를 자주 표현해줘요','함께 새로운 아이디어를 탐구하는 시간이 관계를 살려요']},
+  'ENTJ-ENFP':{score:82,title:'열정과 창의력의 폭발',desc:'ENTJ의 실행력과 ENFP의 창의성이 만나 환상의 팀워크를 발휘해요. 💥',bars:[85,78,80,82],tips:['ENTJ는 ENFP를 지시하려 하지 말고 파트너로 대해요','ENFP는 ENTJ의 목표 지향성을 지지해줘요','갈등 시 ENTJ는 논리보다 감정 공감을 먼저 해요']},
+  'INFJ-INTP':{score:86,title:'깊이 있는 내면의 연결',desc:'INTP의 논리와 INFJ의 직관이 아름답게 맞닿아요. 서로를 통해 새로운 세계를 발견해요. ✨',bars:[85,88,84,86],tips:['INTP는 INFJ의 감정적 니즈를 논리로 분석하지 말아요','INFJ는 INTP의 독립적인 탐구 시간을 존중해요','깊은 주제로 대화하는 시간이 두 사람의 연료예요']},
+
+  // NT-SJ 조합
+  'ENTJ-ESTJ':{score:80,title:'목표를 향해 달리는 파워 커플',desc:'둘 다 실행력이 강하고 책임감이 있어요. 서로를 인정하면 최강 커플! ⚡',bars:[85,70,82,80],tips:['주도권 다툼이 생기기 쉬워요, 역할 분담을 명확히 해요','감정적인 부분을 의도적으로 챙기는 노력이 필요해요','서로의 성취를 진심으로 축하해주는 습관을 만들어요']},
+  'INTJ-ISTJ':{score:76,title:'묵묵히 함께 걸어가는 사이',desc:'둘 다 신중하고 계획적이에요. 안정적이고 믿을 수 있는 관계를 만들어요. 🗂️',bars:[72,65,85,80],tips:['감정 표현이 서툰 둘, 작은 애정 표현부터 시작해봐요','비슷한 성향이라 자극이 적을 수 있어요, 새로운 경험을 해봐요','서로의 다른 점보다 공통점에 집중하면 좋아요']},
+  'INTP-ISTJ':{score:68,title:'이론과 현실의 균형',desc:'INTP의 이론과 ISTJ의 현실감각이 균형을 이루면 좋아요. 서로의 방식을 이해하는 노력이 필요해요. 📚',bars:[65,62,72,68],tips:['ISTJ는 INTP의 추상적인 사고를 존중해줘요','INTP는 ISTJ의 규칙과 루틴에 유연하게 맞춰봐요','서로 다른 장점이 있음을 인정하면 관계가 편해져요']},
+
+  // NF-SJ 조합
+  'ENFJ-ESFJ':{score:80,title:'사람을 사랑하는 두 마음',desc:'둘 다 따뜻하고 사교적이에요. 서로를 아끼며 주변까지 행복하게 만드는 커플이에요. 🌸',bars:[82,85,80,78],tips:['둘 다 갈등을 싫어해서 문제를 쌓아두기 쉬워요','서로에게 의존하는 것도 좋지만 독립성도 유지해요','주변 사람들보다 서로에게 더 집중하는 시간을 만들어요']},
+  'INFP-ISFJ':{score:76,title:'따뜻한 마음이 통하는 사이',desc:'둘 다 따뜻하고 배려심이 많아요. 서로를 아끼는 온기 넘치는 관계예요. 🌸',bars:[72,82,76,76],tips:['갈등을 피하려다 억압된 감정이 쌓이지 않도록 해요','ISFJ는 INFP의 이상주의를 이해하려 노력해봐요','작은 일상을 함께 나누는 것이 관계를 더 깊게 해요']},
+  'INFJ-ISFJ':{score:78,title:'따뜻한 마음이 통하는 두 사람',desc:'둘 다 다른 사람을 배려하는 마음이 커요. 서로를 아끼는 따뜻한 관계예요. 🌷',bars:[75,82,78,78],tips:['INFJ의 직관적 판단을 ISFJ가 신뢰해줘요','서로 너무 배려하다 자신의 감정을 잃지 않도록 해요','함께하는 의미 있는 활동이 관계를 풍요롭게 해요']},
+  'ENFP-ISFJ':{score:72,title:'따뜻함으로 연결된 사이',desc:'ENFP의 활기가 ISFJ를 밝게 해주고, ISFJ의 따뜻함이 ENFP를 안정시켜줘요. 🌷',bars:[70,78,72,70],tips:['ISFJ는 ENFP의 즉흥성에 유연하게 대응해봐요','ENFP는 ISFJ가 좋아하는 안정적인 루틴을 함께 만들어봐요','서로의 다름을 약점이 아닌 보완으로 바라봐요']},
+
+  // SP-SJ 조합
+  'ESTP-ESTJ':{score:76,title:'행동하는 두 현실주의자',desc:'둘 다 실행력이 강하고 현실적이에요. 장기적인 비전을 함께 세워가면 더 좋아요. ⚡',bars:[80,68,78,76],tips:['빠른 판단보다 서로의 의견을 충분히 들어봐요','감정보다 효율을 중시하다 관계가 메마를 수 있어요','함께 새로운 도전을 즐기면 활기찬 관계가 돼요']},
+  'ISFP-ISFJ':{score:78,title:'감성과 배려가 넘치는 관계',desc:'둘 다 섬세하고 따뜻해요. 서로의 감정을 잘 이해하는 평화로운 관계예요. 🎨',bars:[75,82,78,78],tips:['갈등을 피하려다 오히려 거리가 생길 수 있어요','ISFJ는 ISFP의 자유로운 성향을 존중해줘요','창의적인 활동을 함께 즐기면 더 깊어지는 관계']},
+  'ESFP-ESFJ':{score:78,title:'밝고 따뜻한 에너지의 만남',desc:'둘 다 사교적이고 따뜻해요. 함께라면 어디서나 분위기를 밝게 만드는 커플이에요. 🎉',bars:[80,80,75,78],tips:['즐거운 현재에 집중하면서도 미래도 함께 그려봐요','감정적으로 의존하기 쉬운 둘, 독립성도 유지해요','깊은 대화 시간을 의도적으로 만들어봐요']},
+
+  // 어려운 조합들
+  'ENTJ-ISFP':{score:60,title:'강함과 섬세함의 도전적인 만남',desc:'많이 다르지만 서로에게 없는 것을 채워줄 수 있어요. 이해와 배려가 필요한 관계예요. 🌱',bars:[58,65,62,58],tips:['ENTJ는 ISFP의 감정을 무시하지 말고 소중히 여겨요','ISFP는 ENTJ의 직설적인 화법을 공격으로 받아들이지 말아요','서로의 다름을 받아들이는 데 시간이 필요한 관계예요']},
+  'ESTJ-INFP':{score:55,title:'다름을 배우는 관계',desc:'많이 다르지만 서로에게서 배울 점이 있어요. 많은 이해와 노력이 필요한 관계예요. 🌱',bars:[50,58,58,55],tips:['ESTJ는 INFP의 감성을 비효율로 보지 말아요','INFP는 ESTJ의 직설화법을 비난으로 받아들이지 말아요','서로의 장점에 집중하면 의외로 잘 맞을 수 있어요']},
+  'ENTP-ISFJ':{score:58,title:'자유와 안정의 줄다리기',desc:'ENTP의 자유분방함과 ISFJ의 안정 추구가 충돌할 수 있어요. 서로를 이해하는 노력이 필요해요. 🌸',bars:[55,62,60,58],tips:['ENTP는 ISFJ의 감정과 루틴을 존중해줘요','ISFJ는 ENTP의 새로운 아이디어를 열린 마음으로 들어봐요','이 조합은 노력하면 서로를 성장시키는 관계가 될 수 있어요']},
+  'INTJ-ESFP':{score:55,title:'도전적이지만 성장하는 관계',desc:'많은 차이가 있지만 서로에게 새로운 세계를 열어줄 수 있어요. 💫',bars:[52,60,58,55],tips:['INTJ는 ESFP의 현재 지향적인 즐거움을 함께 즐겨봐요','ESFP는 INTJ의 깊은 생각을 이해하려 노력해봐요','서로의 다름을 신기하게 바라보는 시선이 필요해요']},
 };
 
-// URL에서 타입 읽기 (예: result.html?type=INFP)
+// =====================================================
+// 점수 계산 (DB에 없는 조합 자동 산출)
+// =====================================================
+function getCompat(a, b) {
+  const k1 = a+'-'+b, k2 = b+'-'+a;
+  if (COMPAT[k1]) return COMPAT[k1];
+  if (COMPAT[k2]) return COMPAT[k2];
+
+  // 인지기능 기반 자동 계산
+  let score = 50;
+  const sameEI = a[0]===b[0], sameNS = a[1]===b[1];
+  const sameTF = a[2]===b[2], sameJP = a[3]===b[3];
+
+  // N끼리 또는 S끼리면 가치관 공유 +8
+  score += sameNS ? 8 : 2;
+  // E/I 반대면 보완성 +6
+  score += sameEI ? 3 : 6;
+  // T/F 반대면 보완성 +5
+  score += sameTF ? 4 : 5;
+  // J/P 같으면 생활패턴 +6
+  score += sameJP ? 6 : 3;
+
+  // 시드 기반 미세 차이 (항상 같은 결과)
+  const seed = (a.charCodeAt(0)*3 + b.charCodeAt(0)*7 + a.charCodeAt(2) + b.charCodeAt(2)) % 12;
+  score += seed;
+  score = Math.min(Math.max(score, 45), 85);
+
+  const bars = [
+    Math.min(score + Math.floor(seed*0.5), 95),
+    Math.min(score - 2 + (sameTF?5:0), 95),
+    Math.min(score + (sameNS?8:0), 95),
+    Math.min(score + (sameJP?5:0), 95)
+  ];
+  return {
+    score,
+    title: score>=80?'설레는 좋은 만남':score>=70?'가능성 있는 두 사람':'서로를 이해하는 관계',
+    desc: `${a}와 ${b}의 만남은 서로에게 새로운 세계를 열어주는 특별한 관계예요. 서로 다른 부분이 오히려 매력이 되고, 함께 성장하는 커플이 될 수 있어요. 💕`,
+    bars,
+    tips:['서로의 다른 점을 단점이 아닌 매력으로 바라봐요','솔직한 감정 표현이 이 관계의 핵심이에요','함께하는 시간의 질을 높이는 데 집중해봐요']
+  };
+}
+
+function getGrade(s){
+  if(s>=93)return'💘 운명의 궁합';
+  if(s>=85)return'💕 환상의 궁합';
+  if(s>=75)return'💛 좋은 궁합';
+  if(s>=65)return'🤝 노력하면 최고';
+  return'💪 도전적인 관계';
+}
+
+// =====================================================
+// 렌더링
+// =====================================================
 const params = new URLSearchParams(location.search);
-const type = (params.get('type') || 'INFP').toUpperCase();
-const data = RESULTS[type] || RESULTS['INFP'];
+const me  = (params.get('me')  || 'INFP').toUpperCase();
+const you = (params.get('you') || 'ENFJ').toUpperCase();
+const data = getCompat(me, you);
 
-// 결과 렌더링
-document.querySelector('.result-emoji').textContent = data.emoji;
-document.getElementById('result-title').textContent = data.title;
-document.getElementById('result-mbti').textContent = data.sub;
-document.getElementById('result-desc').textContent = data.desc;
+document.title = `${me} × ${you} 궁합 ${data.score}점 — LUV SITE`;
 
-// 스펙트럼 바 애니메이션
-setTimeout(() => {
-  document.getElementById('bar1').style.width = data.bars[0] + '%';
-  document.getElementById('bar2').style.width = data.bars[1] + '%';
-  document.getElementById('bar3').style.width = data.bars[2] + '%';
-}, 300);
+setTimeout(()=>{
+  document.getElementById('loading').style.display='none';
+  document.getElementById('content').style.display='block';
+  document.getElementById('tag-me').textContent=me;
+  document.getElementById('tag-you').textContent=you;
+  document.getElementById('result-title').textContent=data.title;
+  document.getElementById('result-desc').textContent=data.desc;
+  document.getElementById('score-grade').textContent=getGrade(data.score);
 
-// ─────────────────────────────────────
-// 추천 테스트 데이터
-// ─────────────────────────────────────
-const RECOMMEND = [
-  { emoji: '💼', title: '나의 직업 유형 테스트', sub: '어떤 직업이 어울릴까?', url: 'quiz.html?id=job' },
-  { emoji: '🎮', title: 'MBTI 게임 플레이 스타일', sub: '나는 어떤 게이머?', url: 'quiz.html?id=game' },
-  { emoji: '🍕', title: '음식으로 보는 성격 유형', sub: '나는 어떤 음식 타입?', url: 'quiz.html?id=food' },
-  { emoji: '🌈', title: '연애 궁합 매칭 테스트', sub: '최고 궁합 MBTI는?', url: 'quiz.html?id=match' },
-];
+  // 꿀팁 렌더링
+  const tipsWrap = document.getElementById('tips-wrap');
+  data.tips.forEach((tip,i)=>{
+    tipsWrap.innerHTML += `<div class="tip-item"><div class="tip-num">${i+1}</div><div>${tip}</div></div>`;
+  });
 
-const grid = document.getElementById('recommend-grid');
-RECOMMEND.forEach(r => {
-  grid.innerHTML += `
-    <a class="recommend-card" href="${r.url}">
-      <span class="rc-emoji">${r.emoji}</span>
-      <div class="rc-title">${r.title}</div>
-      <div class="rc-sub">${r.sub}</div>
-    </a>`;
-});
+  // 점수 카운트업
+  let cur=0;
+  const el=document.getElementById('score-num');
+  const timer=setInterval(()=>{
+    cur+=2;
+    if(cur>=data.score){cur=data.score;clearInterval(timer);}
+    el.textContent=cur;
+  },20);
 
-// ─────────────────────────────────────
-// 공유 기능
-// ─────────────────────────────────────
+  // 바 애니메이션
+  setTimeout(()=>{
+    ['b1','b2','b3','b4'].forEach((id,i)=>{
+      const v=data.bars[i];
+      document.getElementById(id).style.width=v+'%';
+      document.getElementById('v'+(i+1)).textContent=v+'%';
+    });
+  },400);
+}, 800);
+
+// =====================================================
+// 공유 / 저장
+// =====================================================
 const SHARE_URL = location.href;
-const SHARE_TEXT = `나의 연애 유형은 "${data.title}"! 너는 어떤 타입이야? 🔥`;
 
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 2500);
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2500);
 }
-
-// 카카오톡 공유
-// ※ 실제 사용 시 https://developers.kakao.com 에서 앱 등록 후 JS 키 발급 필요
-function shareKakao() {
-  if (typeof Kakao !== 'undefined' && Kakao.isInitialized()) {
-    Kakao.Share.sendDefault({
-      objectType: 'feed',
-      content: {
-        title: `나의 연애 유형: ${data.title}`,
-        description: data.desc.slice(0, 60) + '...',
-        imageUrl: 'https://yourdomain.com/og_default.png',
-        link: { mobileWebUrl: SHARE_URL, webUrl: SHARE_URL }
-      },
-      buttons: [{
-        title: '나도 테스트하기',
-        link: { mobileWebUrl: SHARE_URL, webUrl: SHARE_URL }
-      }]
-    });
-  } else {
-    // 카카오 SDK 미설치시 링크복사 대체
-    copyLink();
-    showToast('💬 카카오 SDK 설정 후 이용 가능해요. 링크를 복사했어요!');
-  }
+async function copyLink(){
+  try{await navigator.clipboard.writeText(SHARE_URL); showToast('🔗 링크가 복사되었어요!');}
+  catch{showToast('🔗 링크를 복사해주세요!');}
 }
-
-function shareInstagram() {
-  // 인스타는 직접 URL 공유 불가 → 이미지 저장 유도
-  saveAsImage();
-  showToast('📸 이미지를 저장하고 인스타에 올려보세요!');
+function shareInstagram(){saveAsImage(); showToast('📸 이미지 저장 후 인스타에 올려보세요!');}
+function shareX(){
+  const txt=`${me} × ${you} 궁합이 ${data.score}점! ${data.title} 💕 너도 해봐 →`;
+  window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(txt)}`,'_blank');
 }
-
-function shareX() {
-  const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(SHARE_TEXT)}&url=${encodeURIComponent(SHARE_URL)}`;
-  window.open(url, '_blank');
-}
-
-async function copyLink() {
-  try {
-    await navigator.clipboard.writeText(SHARE_URL);
-    showToast('🔗 링크가 복사되었어요!');
-  } catch {
-    // 구형 브라우저 대체
-    const el = document.createElement('textarea');
-    el.value = SHARE_URL;
-    document.body.appendChild(el);
-    el.select(); document.execCommand('copy');
-    document.body.removeChild(el);
-    showToast('🔗 링크가 복사되었어요!');
-  }
-}
-
-// ─────────────────────────────────────
-// 이미지 저장 (html2canvas)
-// ─────────────────────────────────────
-async function saveAsImage() {
-  const overlay = document.getElementById('save-overlay');
-  overlay.classList.add('show');
-  
-  try {
-    const card = document.getElementById('result-card');
-    const canvas = await html2canvas(card, {
-      scale: 2,           // 레티나 해상도
-      useCORS: true,
-      backgroundColor: null,
-      logging: false
-    });
-
-    const link = document.createElement('a');
-    link.download = `나의연애유형_${type}.png`;
-    link.href = canvas.toDataURL('image/png');
-    link.click();
+async function saveAsImage(){
+  const ov=document.getElementById('save-overlay');
+  ov.classList.add('show');
+  try{
+    const canvas=await html2canvas(document.getElementById('result-card'),{scale:2,useCORS:true,backgroundColor:null,logging:false});
+    const a=document.createElement('a');
+    a.download=`MBTI궁합_${me}x${you}_${data.score}점.png`;
+    a.href=canvas.toDataURL('image/png');
+    a.click();
     showToast('📥 이미지가 저장되었어요!');
-  } catch (e) {
-    showToast('⚠️ 저장 중 오류가 발생했어요.');
-    console.error(e);
-  } finally {
-    overlay.classList.remove('show');
-  }
-}
-
-// ─────────────────────────────────────
-// 다시하기 / 홈
-// ─────────────────────────────────────
-function restartTest() {
-  const currentTest = params.get('test') || 'love';
-  location.href = `quiz.html?id=${currentTest}`;
-}
-
-function goHome() {
-  location.href = 'index.html';
+  }catch(e){showToast('⚠️ 저장 중 오류가 발생했어요.');}
+  finally{ov.classList.remove('show');}
 }
 </script>
 </body>
