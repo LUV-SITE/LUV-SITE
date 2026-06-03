@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>나의 MBTI 연애 유형 결과</title>
+  
+  <!-- SEO / 카카오·SNS 공유용 OG 태그 -->
+  <meta property="og:title" content="나의 MBTI 연애 유형은?">
+  <meta property="og:description" content="MBTI로 보는 나의 연애 스타일 테스트">
+  <meta property="og:image" content="https://yourdomain.com/og_default.png">
+  <meta property="og:url" content="https://yourdomain.com/result.html">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <!-- html2canvas: 이미지 저장 기능 -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+  <style>
+    :root {
+      --primary: #ff6b9d;
+      --primary-light: #fff0f5;
+      --primary-dark: #d63f7a;
+      --accent: #ff9f43;
+      --bg: #fafafa;
+      --card-bg: #ffffff;
+      --text: #2d2d2d;
+      --text-muted: #888;
+      --radius: 20px;
+      --radius-sm: 12px;
+      --shadow: 0 4px 20px rgba(255,107,157,0.12);
+      --max-width: 430px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .page-wrap {
+      width: 100%;
+      max-width: var(--max-width);
+      padding: 0 0 60px;
+    }
+
+    /* ── 헤더 ── */
+    .top-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 20px;
+      position: sticky;
+      top: 0;
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(8px);
+      z-index: 100;
+      border-bottom: 1px solid #f0f0f0;
+    }
+    .top-bar .back-btn {
+      width: 36px; height: 36px;
+      border: none; background: #f5f5f5; border-radius: 50%;
+      font-size: 18px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .top-bar .site-name {
+      font-size: 15px; font-weight: 700;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .top-bar .share-icon {
+      width: 36px; height: 36px;
+      border: 1px solid #eee; background: white; border-radius: 50%;
+      font-size: 16px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    /* ── 광고 슬롯 (상단) ── */
+    .ad-slot {
+      width: 100%;
+      background: #f5f5f5;
+      border: 1px dashed #ddd;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-muted);
+      font-size: 12px;
+      margin: 0;
+      overflow: hidden;
+    }
+    .ad-slot-banner { height: 60px; margin: 8px 16px; }
+    .ad-slot-mid    { height: 100px; margin: 0 16px 16px; }
+    .ad-slot-native { min-height: 80px; margin: 0 16px 16px; }
+
+    /* ── 결과 카드 (저장 대상) ── */
+    #result-card {
+      margin: 12px 16px 0;
+      background: linear-gradient(135deg, #fff0f7 0%, #fff8f0 100%);
+      border-radius: var(--radius);
+      padding: 28px 24px 24px;
+      border: 1px solid rgba(255,107,157,0.15);
+      position: relative;
+      overflow: hidden;
+    }
+    #result-card::before {
+      content: '';
+      position: absolute; top: -40px; right: -40px;
+      width: 160px; height: 160px;
+      background: radial-gradient(circle, rgba(255,159,67,0.15), transparent 70%);
+      border-radius: 50%;
+    }
+
+    .result-type-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--primary); color: white;
+      font-size: 12px; font-weight: 700;
+      padding: 5px 14px; border-radius: 100px;
+      margin-bottom: 14px;
+    }
+    .result-emoji { font-size: 42px; margin-bottom: 10px; display: block; }
+    .result-title {
+      font-size: 22px; font-weight: 800;
+      color: var(--text); line-height: 1.3;
+      margin-bottom: 8px;
+    }
+    .result-subtitle {
+      font-size: 14px; color: var(--primary-dark);
+      font-weight: 600; margin-bottom: 16px;
+    }
+    .result-desc {
+      font-size: 14px; color: #555; line-height: 1.8;
+      background: rgba(255,255,255,0.7);
+      border-radius: var(--radius-sm);
+      padding: 14px 16px;
+    }
+
+    /* ── 스펙트럼 바 ── */
+    .spectrum-section { margin: 16px 16px 0; }
+    .spectrum-section h3 {
+      font-size: 14px; font-weight: 700; color: var(--text-muted);
+      margin-bottom: 12px; letter-spacing: 0.5px;
+    }
+    .spectrum-item { margin-bottom: 12px; }
+    .spectrum-labels {
+      display: flex; justify-content: space-between;
+      font-size: 12px; color: var(--text-muted); margin-bottom: 4px;
+    }
+    .spectrum-bar {
+      height: 8px; background: #f0f0f0; border-radius: 100px; overflow: hidden;
+    }
+    .spectrum-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      border-radius: 100px;
+      transition: width 1s cubic-bezier(.25,.8,.25,1);
+    }
+
+    /* ── 광고 슬롯 (중간) ── */
+
+    /* ── 공유/다시하기/저장 버튼 그룹 ── */
+    .action-section { margin: 16px 16px 0; }
+    .action-section h3 {
+      font-size: 13px; color: var(--text-muted); font-weight: 600;
+      text-align: center; margin-bottom: 12px;
+    }
+
+    .share-btns {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px;
+      margin-bottom: 12px;
+    }
+    .share-btn {
+      display: flex; flex-direction: column; align-items: center;
+      gap: 5px; padding: 12px 4px;
+      background: white; border: 1px solid #f0f0f0; border-radius: var(--radius-sm);
+      cursor: pointer; font-size: 11px; color: var(--text-muted);
+      transition: all 0.15s; font-family: inherit;
+    }
+    .share-btn:active { transform: scale(0.95); background: #f9f9f9; }
+    .share-btn .icon { font-size: 26px; }
+
+    .bottom-btns {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+      margin-bottom: 8px;
+    }
+    .btn-primary {
+      padding: 14px; border: none;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: white; border-radius: var(--radius-sm);
+      font-size: 14px; font-weight: 700; cursor: pointer;
+      font-family: inherit; transition: opacity 0.15s;
+    }
+    .btn-primary:active { opacity: 0.85; }
+    .btn-secondary {
+      padding: 14px; border: 1.5px solid var(--primary);
+      background: white; color: var(--primary);
+      border-radius: var(--radius-sm);
+      font-size: 14px; font-weight: 700; cursor: pointer;
+      font-family: inherit; transition: all 0.15s;
+    }
+    .btn-secondary:active { background: var(--primary-light); }
+    .btn-save {
+      width: 100%; padding: 14px; border: 1.5px solid #e0e0e0;
+      background: white; color: var(--text);
+      border-radius: var(--radius-sm);
+      font-size: 14px; font-weight: 600; cursor: pointer;
+      font-family: inherit; display: flex; align-items: center;
+      justify-content: center; gap: 6px; transition: all 0.15s;
+    }
+    .btn-save:active { background: #f5f5f5; }
+
+    /* ── 추천 테스트 ── */
+    .recommend-section { margin: 20px 16px 0; }
+    .recommend-section h3 {
+      font-size: 16px; font-weight: 800; color: var(--text); margin-bottom: 14px;
+    }
+    .recommend-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+    }
+    .recommend-card {
+      background: white; border: 1px solid #f0f0f0;
+      border-radius: var(--radius-sm); padding: 14px 12px;
+      cursor: pointer; transition: all 0.15s; text-decoration: none;
+    }
+    .recommend-card:active { transform: scale(0.97); border-color: var(--primary); }
+    .recommend-card .rc-emoji { font-size: 28px; margin-bottom: 6px; display: block; }
+    .recommend-card .rc-title {
+      font-size: 13px; font-weight: 700; color: var(--text);
+      line-height: 1.4; margin-bottom: 4px;
+    }
+    .recommend-card .rc-sub { font-size: 11px; color: var(--text-muted); }
+
+    /* ── 토스트 알림 ── */
+    #toast {
+      position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%) translateY(20px);
+      background: rgba(0,0,0,0.8); color: white;
+      padding: 10px 22px; border-radius: 100px; font-size: 13px;
+      opacity: 0; transition: all 0.3s; pointer-events: none; z-index: 9999;
+      white-space: nowrap;
+    }
+    #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    /* 이미지 저장 로딩 */
+    #save-overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,0.5); z-index: 9999;
+      align-items: center; justify-content: center; flex-direction: column; gap: 14px;
+    }
+    #save-overlay.show { display: flex; }
+    #save-overlay span { color: white; font-size: 15px; font-weight: 600; }
+
+    /* 모바일 하단 공간 */
+    .bottom-spacer { height: 40px; }
+  </style>
+</head>
+<body>
+<div class="page-wrap">
+
+  <!-- 헤더 -->
+  <div class="top-bar">
+    <button class="back-btn" onclick="history.back()">←</button>
+    <span class="site-name">✨ 나의 유형 테스트</span>
+    <button class="share-icon" onclick="shareKakao()">📤</button>
+  </div>
+
+  <!-- 광고 슬롯 ① 상단 배너 (애드센스 or 쿠팡파트너스 교체 위치) -->
+  <div class="ad-slot ad-slot-banner" id="ad-top">
+    <!-- 
+      [광고 교체 방법]
+      1. 쿠팡파트너스: 아래 주석 해제 후 발급받은 코드 붙여넣기
+      2. 구글 애드센스 승인 후: <ins class="adsbygoogle" ...> 코드로 교체
+    -->
+    <!-- 쿠팡파트너스 예시:
+    <script src="https://ads-partners.coupang.com/g.js"></script>
+    <script>
+      new PartnerCoupang.G({"id":XXXXXX,"template":"banner","trackingCode":"AF_XXXX","width":"320","height":"50"});
+    </script>
+    -->
+    📢 광고 영역 (320×50)
+  </div>
+
+  <!-- 결과 카드 (이미지 저장 대상) -->
+  <div id="result-card">
+    <div class="result-type-badge">💝 나의 연애 유형</div>
+    <span class="result-emoji">🌙</span>
+    <div class="result-title" id="result-title">감성 충만한 낭만주의자</div>
+    <div class="result-subtitle" id="result-mbti">INFP형 연애 스타일</div>
+    <div class="result-desc" id="result-desc">
+      당신은 깊은 감성과 풍부한 상상력으로 연애하는 타입이에요. 
+      표면적인 것보다 감정적 연결을 중요시하고, 상대방을 이상화하는 경향이 있어요. 
+      진심 어린 관계를 원하지만 때로는 혼자만의 시간도 필요한 사람이에요. 💕
+    </div>
+  </div>
+
+  <!-- 스펙트럼 -->
+  <div class="spectrum-section">
+    <h3>나의 연애 성향 분석</h3>
+    <div class="spectrum-item">
+      <div class="spectrum-labels"><span>감성적 🌸</span><span>이성적 🧠</span></div>
+      <div class="spectrum-bar"><div class="spectrum-fill" id="bar1" style="width:0%"></div></div>
+    </div>
+    <div class="spectrum-item">
+      <div class="spectrum-labels"><span>표현적 💬</span><span>내성적 🌿</span></div>
+      <div class="spectrum-bar"><div class="spectrum-fill" id="bar2" style="width:0%"></div></div>
+    </div>
+    <div class="spectrum-item">
+      <div class="spectrum-labels"><span>자유로운 🦋</span><span>안정적 🏡</span></div>
+      <div class="spectrum-bar"><div class="spectrum-fill" id="bar3" style="width:0%"></div></div>
+    </div>
+  </div>
+
+  <!-- 광고 슬롯 ② 중간 (결과 + 공유 사이 — 가장 고수익 위치) -->
+  <div class="ad-slot ad-slot-mid" id="ad-mid" style="margin-top:16px;">
+    <!-- 
+      이 위치가 CTR이 가장 높음 (결과 확인 후 스크롤하는 지점)
+      애드센스: 300x100 or 반응형
+    -->
+    📢 광고 영역 (중간 — 고수익 위치)
+  </div>
+
+  <!-- 공유 / 저장 / 다시하기 버튼 -->
+  <div class="action-section">
+    <h3>결과 공유하기</h3>
+    
+    <div class="share-btns">
+      <button class="share-btn" onclick="shareKakao()">
+        <span class="icon">💬</span>카카오
+      </button>
+      <button class="share-btn" onclick="shareInstagram()">
+        <span class="icon">📸</span>인스타
+      </button>
+      <button class="share-btn" onclick="shareX()">
+        <span class="icon">🐦</span>X
+      </button>
+      <button class="share-btn" onclick="copyLink()">
+        <span class="icon">🔗</span>링크복사
+      </button>
+    </div>
+
+    <div class="bottom-btns">
+      <button class="btn-primary" onclick="restartTest()">🔄 다시하기</button>
+      <button class="btn-secondary" onclick="goHome()">🏠 다른 테스트</button>
+    </div>
+
+    <button class="btn-save" onclick="saveAsImage()">
+      📥 이미지로 저장하기
+    </button>
+  </div>
+
+  <!-- 광고 슬롯 ③ 네이티브형 (추천 테스트 위) -->
+  <div class="ad-slot ad-slot-native" id="ad-native" style="margin-top:16px;">
+    <!-- 
+      네이티브 광고 or 쿠팡 상품 추천
+      콘텐츠처럼 보여서 클릭률 높음
+    -->
+    📢 네이티브 광고 영역
+  </div>
+
+  <!-- 추천 테스트 -->
+  <div class="recommend-section">
+    <h3>🎯 이런 테스트도 해보세요</h3>
+    <div class="recommend-grid" id="recommend-grid">
+      <!-- JS로 동적 삽입 -->
+    </div>
+  </div>
+
+  <div class="bottom-spacer"></div>
+</div>
+
+<!-- 토스트 -->
+<div id="toast">✅ 링크가 복사되었어요!</div>
+
+<!-- 저장 로딩 오버레이 -->
+<div id="save-overlay">
+  <div style="width:48px;height:48px;border:3px solid rgba(255,255,255,0.3);border-top-color:white;border-radius:50%;animation:spin 0.8s linear infinite;"></div>
+  <span>이미지 저장 중...</span>
+</div>
+
+<style>
+  @keyframes spin { to { transform: rotate(360deg); } }
+</style>
+
+<script>
+// ─────────────────────────────────────
+// 결과 데이터 (URL 파라미터로 받아서 처리)
+// ─────────────────────────────────────
+const RESULTS = {
+  INFP: {
+    emoji: '🌙', title: '감성 충만한 낭만주의자', sub: 'INFP형 연애 스타일',
+    desc: '당신은 깊은 감성과 풍부한 상상력으로 연애하는 타입이에요. 표면적인 것보다 감정적 연결을 중요시하고, 상대방을 이상화하는 경향이 있어요. 진심 어린 관계를 원하지만 때로는 혼자만의 시간도 필요한 사람이에요. 💕',
+    bars: [75, 30, 60]
+  },
+  ENTJ: {
+    emoji: '🔥', title: '열정 넘치는 리더형 연애', sub: 'ENTJ형 연애 스타일',
+    desc: '당신은 목표 지향적이고 열정적인 연애를 하는 타입이에요. 관계에서도 주도권을 쥐는 편이며, 상대방을 성장시키려는 따뜻한 마음이 있어요.',
+    bars: [40, 80, 35]
+  },
+  ENFP: {
+    emoji: '✨', title: '에너지 넘치는 설레임 주의자', sub: 'ENFP형 연애 스타일',
+    desc: '새로운 연애에 온 마음을 쏟는 타입! 설레임을 먹고 사는 당신은 상대를 기쁘게 하는 아이디어가 넘쳐나요.',
+    bars: [85, 70, 75]
+  },
+};
+
+// URL에서 타입 읽기 (예: result.html?type=INFP)
+const params = new URLSearchParams(location.search);
+const type = (params.get('type') || 'INFP').toUpperCase();
+const data = RESULTS[type] || RESULTS['INFP'];
+
+// 결과 렌더링
+document.querySelector('.result-emoji').textContent = data.emoji;
+document.getElementById('result-title').textContent = data.title;
+document.getElementById('result-mbti').textContent = data.sub;
+document.getElementById('result-desc').textContent = data.desc;
+
+// 스펙트럼 바 애니메이션
+setTimeout(() => {
+  document.getElementById('bar1').style.width = data.bars[0] + '%';
+  document.getElementById('bar2').style.width = data.bars[1] + '%';
+  document.getElementById('bar3').style.width = data.bars[2] + '%';
+}, 300);
+
+// ─────────────────────────────────────
+// 추천 테스트 데이터
+// ─────────────────────────────────────
+const RECOMMEND = [
+  { emoji: '💼', title: '나의 직업 유형 테스트', sub: '어떤 직업이 어울릴까?', url: 'quiz.html?id=job' },
+  { emoji: '🎮', title: 'MBTI 게임 플레이 스타일', sub: '나는 어떤 게이머?', url: 'quiz.html?id=game' },
+  { emoji: '🍕', title: '음식으로 보는 성격 유형', sub: '나는 어떤 음식 타입?', url: 'quiz.html?id=food' },
+  { emoji: '🌈', title: '연애 궁합 매칭 테스트', sub: '최고 궁합 MBTI는?', url: 'quiz.html?id=match' },
+];
+
+const grid = document.getElementById('recommend-grid');
+RECOMMEND.forEach(r => {
+  grid.innerHTML += `
+    <a class="recommend-card" href="${r.url}">
+      <span class="rc-emoji">${r.emoji}</span>
+      <div class="rc-title">${r.title}</div>
+      <div class="rc-sub">${r.sub}</div>
+    </a>`;
+});
+
+// ─────────────────────────────────────
+// 공유 기능
+// ─────────────────────────────────────
+const SHARE_URL = location.href;
+const SHARE_TEXT = `나의 연애 유형은 "${data.title}"! 너는 어떤 타입이야? 🔥`;
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// 카카오톡 공유
+// ※ 실제 사용 시 https://developers.kakao.com 에서 앱 등록 후 JS 키 발급 필요
+function shareKakao() {
+  if (typeof Kakao !== 'undefined' && Kakao.isInitialized()) {
+    Kakao.Share.sendDefault({
+      objectType: 'feed',
+      content: {
+        title: `나의 연애 유형: ${data.title}`,
+        description: data.desc.slice(0, 60) + '...',
+        imageUrl: 'https://yourdomain.com/og_default.png',
+        link: { mobileWebUrl: SHARE_URL, webUrl: SHARE_URL }
+      },
+      buttons: [{
+        title: '나도 테스트하기',
+        link: { mobileWebUrl: SHARE_URL, webUrl: SHARE_URL }
+      }]
+    });
+  } else {
+    // 카카오 SDK 미설치시 링크복사 대체
+    copyLink();
+    showToast('💬 카카오 SDK 설정 후 이용 가능해요. 링크를 복사했어요!');
+  }
+}
+
+function shareInstagram() {
+  // 인스타는 직접 URL 공유 불가 → 이미지 저장 유도
+  saveAsImage();
+  showToast('📸 이미지를 저장하고 인스타에 올려보세요!');
+}
+
+function shareX() {
+  const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(SHARE_TEXT)}&url=${encodeURIComponent(SHARE_URL)}`;
+  window.open(url, '_blank');
+}
+
+async function copyLink() {
+  try {
+    await navigator.clipboard.writeText(SHARE_URL);
+    showToast('🔗 링크가 복사되었어요!');
+  } catch {
+    // 구형 브라우저 대체
+    const el = document.createElement('textarea');
+    el.value = SHARE_URL;
+    document.body.appendChild(el);
+    el.select(); document.execCommand('copy');
+    document.body.removeChild(el);
+    showToast('🔗 링크가 복사되었어요!');
+  }
+}
+
+// ─────────────────────────────────────
+// 이미지 저장 (html2canvas)
+// ─────────────────────────────────────
+async function saveAsImage() {
+  const overlay = document.getElementById('save-overlay');
+  overlay.classList.add('show');
+  
+  try {
+    const card = document.getElementById('result-card');
+    const canvas = await html2canvas(card, {
+      scale: 2,           // 레티나 해상도
+      useCORS: true,
+      backgroundColor: null,
+      logging: false
+    });
+
+    const link = document.createElement('a');
+    link.download = `나의연애유형_${type}.png`;
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+    showToast('📥 이미지가 저장되었어요!');
+  } catch (e) {
+    showToast('⚠️ 저장 중 오류가 발생했어요.');
+    console.error(e);
+  } finally {
+    overlay.classList.remove('show');
+  }
+}
+
+// ─────────────────────────────────────
+// 다시하기 / 홈
+// ─────────────────────────────────────
+function restartTest() {
+  const currentTest = params.get('test') || 'love';
+  location.href = `quiz.html?id=${currentTest}`;
+}
+
+function goHome() {
+  location.href = 'index.html';
+}
+</script>
+</body>
+</html>

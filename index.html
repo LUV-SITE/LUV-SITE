@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>MBTI 테스트 - 나의 유형은?</title>
+  
+  <!-- SEO / 카카오·SNS 공유용 OG 태그 -->
+  <meta property="og:title" content="MBTI 테스트 - 나의 유형은?">
+  <meta property="og:description" content="연애, 직업, 음식, 궁합까지! MBTI로 알아보는 나의 유형">
+  <meta property="og:image" content="https://yourdomain.com/og_default.png">
+  <meta property="og:url" content="https://yourdomain.com/">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <style>
+    :root {
+      --primary: #ff6b9d;
+      --primary-light: #fff0f5;
+      --primary-dark: #d63f7a;
+      --accent: #ff9f43;
+      --bg: #fafafa;
+      --card-bg: #ffffff;
+      --text: #2d2d2d;
+      --text-muted: #888;
+      --radius: 20px;
+      --radius-sm: 12px;
+      --shadow: 0 4px 20px rgba(255,107,157,0.12);
+      --max-width: 430px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .page-wrap {
+      width: 100%;
+      max-width: var(--max-width);
+      padding: 0 0 60px;
+    }
+
+    /* ── 헤더 ── */
+    .header {
+      text-align: center;
+      padding: 40px 20px 30px;
+      background: linear-gradient(135deg, var(--primary-light) 0%, #ffffff 100%);
+    }
+
+    .header h1 {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--primary-dark);
+      margin-bottom: 8px;
+    }
+
+    .header p {
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+
+    /* ── 테스트 카드 리스트 ── */
+    .test-list {
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .test-card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      padding: 24px;
+      box-shadow: var(--shadow);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      cursor: pointer;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .test-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(255,107,157,0.18);
+    }
+
+    .test-card:active {
+      transform: scale(0.98);
+    }
+
+    .card-emoji {
+      font-size: 48px;
+      margin-bottom: 12px;
+    }
+
+    .card-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+
+    .card-desc {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.5;
+      margin-bottom: 16px;
+    }
+
+    .start-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px 24px;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      color: white;
+      border: none;
+      border-radius: var(--radius-sm);
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.2s ease;
+    }
+
+    .start-btn:hover {
+      opacity: 0.9;
+    }
+
+    /* ── 하단 ── */
+    .footer {
+      text-align: center;
+      padding: 30px 20px;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .footer a {
+      color: var(--primary);
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="page-wrap">
+    <!-- 헤더 -->
+    <header class="header">
+      <h1>💕 MBTI 테스트</h1>
+      <p>나만의 유형을 찾아보세요</p>
+    </header>
+
+    <!-- 테스트 카드 리스트 -->
+    <div class="test-list">
+      <!-- 연애유형 -->
+      <a href="quiz.html?id=love" class="test-card">
+        <div class="card-emoji">💝</div>
+        <div class="card-title">연애 유형 테스트</div>
+        <div class="card-desc">MBTI로 알아보는 나의 연애 스타일과 이상형</div>
+        <button class="start-btn">테스트 시작 →</button>
+      </a>
+
+      <!-- 직업유형 -->
+      <a href="quiz.html?id=career" class="test-card">
+        <div class="card-emoji">💼</div>
+        <div class="card-title">직업 유형 테스트</div>
+        <div class="card-desc">나에게 맞는 직업과 업무 스타일은?</div>
+        <button class="start-btn">테스트 시작 →</button>
+      </a>
+
+      <!-- 음식유형 -->
+      <a href="quiz.html?id=food" class="test-card">
+        <div class="card-emoji">🍜</div>
+        <div class="card-title">음식 유형 테스트</div>
+        <div class="card-desc">MBTI로 보는 나의 음식 취향과 식습관</div>
+        <button class="start-btn">테스트 시작 →</button>
+      </a>
+
+      <!-- 궁합테스트 -->
+      <a href="quiz.html?id=compatibility" class="test-card">
+        <div class="card-emoji">💑</div>
+        <div class="card-title">궁합 테스트</div>
+        <div class="card-desc">나와 잘 맞는 MBTI 유형은?</div>
+        <button class="start-btn">테스트 시작 →</button>
+      </a>
+    </div>
+
+    <!-- 하단 -->
+    <footer class="footer">
+      <a href="privacy.html">개인정보처리방침</a>
+    </footer>
+  </div>
+</body>
+</html>
