@@ -77,6 +77,10 @@
     .loading{text-align:center;padding:60px 20px;font-size:32px;animation:hb 1s ease-in-out infinite;}
     @keyframes hb{0%,100%{transform:scale(1);}50%{transform:scale(1.2);}}
   </style>
+  <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.0/kakao.min.js"></script>
+<script>
+  Kakao.init('5e4c791f246bd00a0fe3bf0516396a9a');
+</script>
 </head>
 <body>
 <div class="wrap">
@@ -358,6 +362,32 @@ async function copyLink(){
   catch{showToast('🔗 링크를 복사해주세요!');}
 }
 function shareInstagram(){saveAsImage(); showToast('📸 이미지 저장 후 인스타에 올려보세요!');}
+function shareKakao(){
+  if(typeof Kakao==='undefined'||!Kakao.isInitialized()){
+    copyLink();
+    showToast('💬 링크를 복사했어요!');
+    return;
+  }
+  Kakao.Share.sendDefault({
+    objectType:'feed',
+    content:{
+      title:`${me} × ${you} 궁합이 ${data.score}점!`,
+      description:data.title+' 💕 나도 테스트해봐!',
+      imageUrl:'https://luv-site-kr.netlify.app/og.png',
+      link:{
+        mobileWebUrl:location.href,
+        webUrl:location.href
+      }
+    },
+    buttons:[{
+      title:'나도 테스트하기 💘',
+      link:{
+        mobileWebUrl:location.href,
+        webUrl:location.href
+      }
+    }]
+  });
+}
 function shareX(){
   const txt=`${me} × ${you} 궁합이 ${data.score}점! ${data.title} 💕 너도 해봐 →`;
   window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(txt)}`,'_blank');

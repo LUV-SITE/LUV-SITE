@@ -150,6 +150,10 @@
       to { opacity: 1; transform: translateY(0); }
     }
   </style>
+  <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.0/kakao.min.js"></script>
+<script>
+  Kakao.init('5e4c791f246bd00a0fe3bf0516396a9a');
+</script>
 </head>
 <body>
 <div class="wrap">
@@ -161,10 +165,14 @@
   </header>
 
   <!-- 광고 슬롯 ① 상단 -->
-  <div class="ad-slot ad-top" id="ad-top">
-    <!-- 쿠팡파트너스 or 애드센스 코드 삽입 위치 -->
-    📢 광고 영역
-  </div>
+    <div class="ad-slot ad-top" id="ad-top">
+    <ins class="kakao_ad_area" style="display:none;"
+        data-ad-unit="DAN-o5cKltKE4qe54NrF"
+        data-ad-width="320"
+        data-ad-height="50"></ins>
+    <script type="text/javascript"
+        src="//t1.kakaocdn.net/kas/static/ba.min.js" async></script>
+    </div>
 
   <div class="section-title">🔥 인기 테스트</div>
 
