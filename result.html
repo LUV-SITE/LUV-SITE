@@ -22,6 +22,7 @@
     .ad-top{height:60px;margin:8px 16px 0;}
     .ad-mid{height:90px;margin:16px;}
     .ad-native{min-height:80px;margin:0 16px 16px;}
+    #save-wrap{background:var(--bg);padding-bottom:4px;border-radius:var(--radius);overflow:hidden;}
     #result-card{margin:16px;border-radius:var(--radius);background:linear-gradient(135deg,#fff0f7 0%,#f0f4ff 100%);border:1.5px solid rgba(255,107,157,0.2);padding:28px 22px 24px;position:relative;overflow:hidden;}
     #result-card::before{content:'';position:absolute;top:-30px;right:-30px;width:120px;height:120px;background:radial-gradient(circle,rgba(255,179,71,0.2),transparent 70%);border-radius:50%;}
     .mbti-pair{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:16px;}
@@ -84,9 +85,17 @@
     <span class="top-title">💑 MBTI 궁합 결과</span>
     <button class="share-icon" onclick="copyLink()">📤</button>
   </div>
-  <div class="ad-slot ad-top">📢 광고 영역</div>
+<div class="ad-slot ad-top" id="ad-top">
+  <ins class="kakao_ad_area" style="display:none;"
+    data-ad-unit="DAN-o5cKltKE4qe54NrF"
+    data-ad-width="320"
+    data-ad-height="50"></ins>
+  <script type="text/javascript"
+    src="//t1.kakaocdn.net/kas/static/ba.min.js" async></script>
+</div>
   <div class="loading" id="loading">💗</div>
   <div id="content" style="display:none;">
+    <div id="save-wrap">
     <div id="result-card">
       <div class="mbti-pair">
         <span class="mbti-tag me" id="tag-me">?</span>
@@ -133,6 +142,8 @@
       </div>
     </div>
 
+    <div style="text-align:center;padding:10px 0 6px;font-size:11px;color:#ffb3cc;letter-spacing:1px;font-weight:700;">💗 LUV SITE</div>
+    </div><!-- /save-wrap -->
     <div class="ad-slot ad-mid">📢 광고 영역 (고수익)</div>
 
     <div class="action-section">
@@ -355,7 +366,7 @@ async function saveAsImage(){
   const ov=document.getElementById('save-overlay');
   ov.classList.add('show');
   try{
-    const canvas=await html2canvas(document.getElementById('result-card'),{scale:2,useCORS:true,backgroundColor:null,logging:false});
+    const canvas=await html2canvas(document.getElementById('save-wrap'),{scale:2,useCORS:true,backgroundColor:null,logging:false});
     const a=document.createElement('a');
     a.download=`MBTI궁합_${me}x${you}_${data.score}점.png`;
     a.href=canvas.toDataURL('image/png');
