@@ -368,26 +368,6 @@ function shareKakao(){
   const url = `https://sharer.kakao.com/talk/friends/picker/link?app_key=5e4c791f246bd00a0fe3bf0516396a9a&link_ver=4.0&template_id=&url=${encodeURIComponent(location.href)}`;
   window.open(url, '_blank');
 }
-  Kakao.Share.sendDefault({
-    objectType:'feed',
-    content:{
-      title:`${me} × ${you} 궁합이 ${data.score}점!`,
-      description:data.title+' 💕 나도 테스트해봐!',
-      imageUrl:'https://luv-site-kr.netlify.app/og.png',
-      link:{
-        mobileWebUrl:'https://luv-site-kr.netlify.app/mbti.html',
-        webUrl:'https://luv-site-kr.netlify.app/mbti.html'
-      }
-    },
-    buttons:[{
-      title:'나도 테스트하기 💘',
-      link:{
-        mobileWebUrl:'https://luv-site-kr.netlify.app/mbti.html',
-        webUrl:'https://luv-site-kr.netlify.app/mbti.html'
-      }
-    }]
-  });
-}
 function shareX(){
   const txt=`${me} × ${you} 궁합이 ${data.score}점! ${data.title} 💕 너도 해봐 →`;
   window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(txt)}`,'_blank');
