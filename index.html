@@ -30,7 +30,7 @@
       min-height: 100vh;
       display: flex; flex-direction: column; align-items: center;
     }
-    .wrap { width: 100%; max-width: var(--max); padding-bottom: 60px; }
+    .wrap { width: 100%; max-width: var(--max); padding-bottom:70px; }
 
     /* 헤더 */
     header {
@@ -55,15 +55,8 @@
     }
 
     /* 광고 슬롯 상단 */
-    .ad-slot{
-  background:transparent;
-  border:none;
-  display:block;
-  overflow:visible;
-    }
-    .ad-top{height:50px;margin:8px 16px 0;}
-    .ad-mid{height:250px;margin:16px;}
-    .ad-native{height:100px;margin:0 16px 16px;}
+    .ad-slot{display:block;overflow:visible;padding:0;margin:0;}
+    .ad-top { height: 60px; margin: 0 16px 20px; }
 
     /* 섹션 타이틀 */
     .section-title {
@@ -129,7 +122,7 @@
     .card-badge.soon { background: #ccc; }
 
     /* 광고 슬롯 중간 */
-    .ad-mid { height: 100px; margin: 20px 16px; }
+    .ad-mid { height: 90px; margin: 20px 16px; }
 
     /* 푸터 */
     footer {
@@ -151,11 +144,16 @@
     @keyframes fadeUp {
       to { opacity: 1; transform: translateY(0); }
     }
+
+    /* 하단 고정 광고 */
+    .sticky-ad{
+      position:fixed;bottom:0;left:50%;transform:translateX(-50%);
+      width:100%;max-width:430px;height:50px;z-index:999;
+      background:white;border-top:1px solid #f0f0f0;
+      display:flex;align-items:center;justify-content:center;
+      overflow:visible;
+    }
   </style>
-  <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.0/kakao.min.js"></script>
-<script>
-  Kakao.init('5e4c791f246bd00a0fe3bf0516396a9a');
-</script>
 </head>
 <body>
 <div class="wrap">
@@ -167,14 +165,14 @@
   </header>
 
   <!-- 광고 슬롯 ① 상단 -->
-    <div class="ad-slot ad-top" id="ad-top">
-    <ins class="kakao_ad_area" style="display:none;"
-        data-ad-unit="DAN-6iw5gO4mKLgRJllI"
-        data-ad-width="320"
-        data-ad-height="50"></ins>
-    <script type="text/javascript"
-        src="//t1.kakaocdn.net/kas/static/ba.min.js" async></script>
-    </div>
+  <div class="ad-slot ad-top" id="ad-top">
+    <!-- 쿠팡파트너스 or 애드센스 코드 삽입 위치 -->
+  <ins class="kakao_ad_area" style="display:none;"
+    data-ad-unit="DAN-6iw5gO4mKLgRJllI"
+    data-ad-width="320"
+    data-ad-height="50"></ins>
+  <script type="text/javascript" src="//t1.kakaocdn.net/kas/static/ba.min.js" async></script>
+  </div>
 
   <div class="section-title">🔥 인기 테스트</div>
 
@@ -193,37 +191,39 @@
     </a>
 
     <!-- 테스트 2: 준비중 예시 -->
-    <a class="test-card" href="attachment.html">
-    <div class="card-emoji">💝</div>
-    <div class="card-info">
-        <div class="card-badge new">NEW</div>
-        <div class="card-title">애착유형 테스트</div>
-        <div class="card-sub">나의 연애 애착 스타일은?</div>
-        <div class="card-count">💝 심리학 기반 20문항</div>
-    </div>
-    <div class="card-arrow">›</div>
+    <a class="test-card coming" href="#">
+      <div class="card-emoji">🔮</div>
+      <div class="card-info">
+        <div class="card-badge soon">SOON</div>
+        <div class="card-title">나의 연애 유형 테스트</div>
+        <div class="card-sub">12문항으로 알아보는 연애 스타일</div>
+        <div class="card-count">준비중이에요 🙏</div>
+      </div>
+      <div class="card-arrow">›</div>
     </a>
 
-    <a class="test-card" href="lovetype.html">
-    <div class="card-emoji">💘</div>
-    <div class="card-info">
-        <div class="card-badge hot">HOT</div>
-        <div class="card-title">나의 연애 유형 테스트</div>
-        <div class="card-sub">쿨한척? 순수멍멍이? 나의 연애 스타일은?</div>
-        <div class="card-count">💘 10문항으로 바로 확인</div>
-    </div>
-    <div class="card-arrow">›</div>
+    <a class="test-card coming" href="#">
+      <div class="card-emoji">🌙</div>
+      <div class="card-info">
+        <div class="card-badge soon">SOON</div>
+        <div class="card-title">오늘의 연애운 테스트</div>
+        <div class="card-sub">오늘 내 연애운은 몇 점일까?</div>
+        <div class="card-count">준비중이에요 🙏</div>
+      </div>
+      <div class="card-arrow">›</div>
     </a>
+
   </div>
 
   <!-- 광고 슬롯 ② 중간 -->
-<div class="ad-slot ad-mid">
-    <ins class="kakao_ad_area" style="display:none;"
-    data-ad-unit = "DAN-scTitgt243zKHDwP"
-    data-ad-width = "320"
-    data-ad-height = "100"></ins>
-    <script type="text/javascript" src="//t1.kakaocdn.net/kas/static/ba.min.js" async></script>
-</div>
+  <div class="ad-slot ad-mid" id="ad-mid">
+    <!-- 쿠팡파트너스 or 애드센스 코드 삽입 위치 -->
+  <ins class="kakao_ad_area" style="display:none;"
+    data-ad-unit="DAN-6iw5gO4mKLgRJllI"
+    data-ad-width="320"
+    data-ad-height="50"></ins>
+  <script type="text/javascript" src="//t1.kakaocdn.net/kas/static/ba.min.js" async></script>
+  </div>
 
   <footer>
     <a href="privacy.html">개인정보처리방침</a> · © 2025 LUV SITE<br>
