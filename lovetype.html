@@ -27,10 +27,10 @@
     .top-right{font-size:12px;color:var(--muted);font-weight:600;}
 
     /* 광고 */
-    .ad-slot{display:block;overflow:visible;}
-    .ad-top{height:50px;margin:8px 16px 0;}
-    .ad-quiz{height:100px;margin:16px 16px 0;}
-    .ad-mid{height:100px;margin:16px;}
+    .ad-slot{display:block;overflow:visible;min-height:0;}
+    .ad-top{min-height:0;max-height:50px;margin:8px 16px 0;}
+    .ad-quiz{min-height:0;max-height:100px;margin:16px 16px 0;}
+    .ad-mid{min-height:0;max-height:100px;margin:16px;}
 
     /* 인트로 */
     .intro{padding:28px 20px 16px;text-align:center;}
@@ -624,25 +624,26 @@ function showResult(){
     </div>
   `;
 
-  // 결과 상단 50 광고 동적 로드
-  const rTopAd = document.getElementById('result-top-ad');
-  rTopAd.innerHTML = `<ins class="kakao_ad_area" style="display:none;"
-    data-ad-unit="DAN-6iw5gO4mKLgRJllI"
-    data-ad-width="320" data-ad-height="50"></ins>`;
-  const rt = document.createElement('script');
-  rt.src = '//t1.kakaocdn.net/kas/static/ba.min.js'; rt.async=true;
-  rTopAd.appendChild(rt);
-
-  // 결과 중간 100 광고 동적 로드
-  const rAdWrap = document.getElementById('result-ad-wrap');
-  rAdWrap.innerHTML = `<ins class="kakao_ad_area" style="display:none;"
-    data-ad-unit="DAN-scTitgt243zKHDwP"
-    data-ad-width="320" data-ad-height="100"></ins>`;
-  const rs = document.createElement('script');
-  rs.src = '//t1.kakaocdn.net/kas/static/ba.min.js'; rs.async=true;
-  rAdWrap.appendChild(rs);
-
   window.scrollTo({top:0, behavior:'smooth'});
+
+  // 결과 광고 동적 로드 (페이지 표시 후 딜레이)
+  setTimeout(()=>{
+    const rTopAd = document.getElementById('result-top-ad');
+    rTopAd.innerHTML = `<ins class="kakao_ad_area" style="display:none;"
+      data-ad-unit="DAN-6iw5gO4mKLgRJllI"
+      data-ad-width="320" data-ad-height="50"></ins>`;
+    const rt = document.createElement('script');
+    rt.src = '//t1.kakaocdn.net/kas/static/ba.min.js'; rt.async=true;
+    rTopAd.appendChild(rt);
+
+    const rAdWrap = document.getElementById('result-ad-wrap');
+    rAdWrap.innerHTML = `<ins class="kakao_ad_area" style="display:none;"
+      data-ad-unit="DAN-scTitgt243zKHDwP"
+      data-ad-width="320" data-ad-height="100"></ins>`;
+    const rs = document.createElement('script');
+    rs.src = '//t1.kakaocdn.net/kas/static/ba.min.js'; rs.async=true;
+    rAdWrap.appendChild(rs);
+  }, 300);
 }
 
 // =====================================================
