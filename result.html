@@ -13,20 +13,15 @@
     :root{--pink:#ff6b9d;--pink-dark:#d63f7a;--pink-pale:#fff0f5;--peach:#ffb347;--blue:#6b9dff;--blue-pale:#f0f4ff;--bg:#fff8fb;--text:#1a1a2e;--muted:#999;--card:#ffffff;--max:430px;--radius:20px;}
     *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
     body{font-family:'Gowun Dodum','Apple SD Gothic Neo',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column;align-items:center;}
-    .wrap{width:100%;max-width:var(--max);padding-bottom:60px;}
+    .wrap{width:100%;max-width:var(--max);padding-bottom:70px;}
     .top-bar{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;background:rgba(255,255,255,0.95);backdrop-filter:blur(8px);position:sticky;top:0;z-index:100;border-bottom:1px solid #ffeef5;}
     .back-btn{width:36px;height:36px;border-radius:50%;border:none;background:#f5f5f5;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
     .top-title{font-size:15px;font-weight:700;}
     .share-icon{width:36px;height:36px;border-radius:50%;border:1px solid #eee;background:white;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
-    .ad-slot{
-  background:transparent;
-  border:none;
-  display:block;
-  overflow:visible;
-}
-.ad-top{height:50px;margin:8px 16px 0;}
-.ad-mid{height:100px;margin:16px;}
-.ad-native{height:100px;margin:0 16px 16px;}
+    .ad-slot{display:block;overflow:visible;padding:0;margin:0;}
+    .ad-top{height:60px;margin:8px 16px 0;}
+    .ad-mid{height:100px;margin:16px;}
+    .ad-native{min-height:80px;margin:0 16px 16px;}
     #save-wrap{background:var(--bg);padding-bottom:4px;border-radius:var(--radius);overflow:hidden;}
     #result-card{margin:16px;border-radius:var(--radius);background:linear-gradient(135deg,#fff0f7 0%,#f0f4ff 100%);border:1.5px solid rgba(255,107,157,0.2);padding:28px 22px 24px;position:relative;overflow:hidden;}
     #result-card::before{content:'';position:absolute;top:-30px;right:-30px;width:120px;height:120px;background:radial-gradient(circle,rgba(255,179,71,0.2),transparent 70%);border-radius:50%;}
@@ -81,11 +76,16 @@
     @keyframes spin{to{transform:rotate(360deg);}}
     .loading{text-align:center;padding:60px 20px;font-size:32px;animation:hb 1s ease-in-out infinite;}
     @keyframes hb{0%,100%{transform:scale(1);}50%{transform:scale(1.2);}}
+
+    /* 하단 고정 광고 */
+    .sticky-ad{
+      position:fixed;bottom:0;left:50%;transform:translateX(-50%);
+      width:100%;max-width:430px;height:50px;z-index:999;
+      background:white;border-top:1px solid #f0f0f0;
+      display:flex;align-items:center;justify-content:center;
+      overflow:visible;
+    }
   </style>
-  <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.0/kakao.min.js"></script>
-<script>
-  Kakao.init('5e4c791f246bd00a0fe3bf0516396a9a');
-</script>
 </head>
 <body>
 <div class="wrap">
@@ -94,13 +94,11 @@
     <span class="top-title">💑 MBTI 궁합 결과</span>
     <button class="share-icon" onclick="copyLink()">📤</button>
   </div>
-<div class="ad-slot ad-top" id="ad-top">
+  <div class="ad-slot ad-top">
   <ins class="kakao_ad_area" style="display:none;"
     data-ad-unit="DAN-6iw5gO4mKLgRJllI"
-    data-ad-width="320"
-    data-ad-height="50"></ins>
-  <script type="text/javascript"
-    src="//t1.kakaocdn.net/kas/static/ba.min.js" async></script>
+    data-ad-width="320" data-ad-height="50"></ins>
+  <script type="text/javascript" src="//t1.kakaocdn.net/kas/static/ba.min.js" async></script>
 </div>
   <div class="loading" id="loading">💗</div>
   <div id="content" style="display:none;">
@@ -153,20 +151,12 @@
 
     <div style="text-align:center;padding:10px 0 6px;font-size:11px;color:#ffb3cc;letter-spacing:1px;font-weight:700;">💗 LUV SITE</div>
     </div><!-- /save-wrap -->
-    <div class="ad-slot ad-mid">
-      <ins class="kakao_ad_area" style="display:none;"
-      data-ad-unit = "DAN-scTitgt243zKHDwP"
-      data-ad-width = "320"
-      data-ad-height = "100"></ins>
-      <script type="text/javascript" src="//t1.kakaocdn.net/kas/static/ba.min.js" async></script>
-</div>
+    <div class="ad-slot ad-mid" id="result-mid-ad"></div>
 
     <div class="action-section">
       <div class="share-label">결과 공유하기 💌</div>
       <div class="share-grid">
-        <button class="share-btn" onclick="shareKakao()">
-          <span class="icon">💬</span>카카오
-        </button>
+        <button class="share-btn" onclick="copyLink()"><span class="icon">💬</span>카카오</button>
         <button class="share-btn" onclick="shareInstagram()"><span class="icon">📸</span>인스타</button>
         <button class="share-btn" onclick="shareX()"><span class="icon">🐦</span>X</button>
         <button class="share-btn" onclick="copyLink()"><span class="icon">🔗</span>링크복사</button>
@@ -329,6 +319,17 @@ document.title = `${me} × ${you} 궁합 ${data.score}점 — LUV SITE`;
 setTimeout(()=>{
   document.getElementById('loading').style.display='none';
   document.getElementById('content').style.display='block';
+
+  // 중간 광고 동적 로드
+  setTimeout(()=>{
+    const midAd = document.getElementById('result-mid-ad');
+    midAd.innerHTML = `<ins class="kakao_ad_area" style="display:none;"
+      data-ad-unit="DAN-scTitgt243zKHDwP"
+      data-ad-width="320" data-ad-height="100"></ins>`;
+    const s = document.createElement('script');
+    s.src = '//t1.kakaocdn.net/kas/static/ba.min.js'; s.async=true;
+    midAd.appendChild(s);
+  }, 300);
   document.getElementById('tag-me').textContent=me;
   document.getElementById('tag-you').textContent=you;
   document.getElementById('result-title').textContent=data.title;
@@ -375,19 +376,6 @@ async function copyLink(){
   catch{showToast('🔗 링크를 복사해주세요!');}
 }
 function shareInstagram(){saveAsImage(); showToast('📸 이미지 저장 후 인스타에 올려보세요!');}
-function shareKakao(){
-  const text = `${me} × ${you} 궁합이 ${data.score}점! ${data.title} 💕\n나도 테스트해봐 👇\n${location.href}`;
-  if(navigator.share){
-    navigator.share({
-      title: `MBTI 궁합 ${data.score}점!`,
-      text: text,
-      url: location.href
-    });
-  } else {
-    copyLink();
-    showToast('💬 링크를 복사했어요! 카톡에 붙여넣기 하세요');
-  }
-}
 function shareX(){
   const txt=`${me} × ${you} 궁합이 ${data.score}점! ${data.title} 💕 너도 해봐 →`;
   window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(txt)}`,'_blank');
