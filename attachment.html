@@ -220,13 +220,7 @@
     <button class="next-btn" id="next-btn" onclick="nextQuestion()">다음 →</button>
 
     <!-- 질문 하단 광고 (320×100) -->
-    <div class="ad-slot ad-quiz">
-      <ins class="kakao_ad_area" style="display:none;"
-        data-ad-unit="DAN-KaaDz3x8sCk02Fgp"
-        data-ad-width="320"
-        data-ad-height="100"></ins>
-      <script type="text/javascript" src="//t1.kakaocdn.net/kas/static/ba.min.js" async></script>
-    </div>
+    <div class="ad-slot ad-quiz" id="quiz-ad-wrap"></div>
   </div>
 
   <!-- 결과 페이지 -->
@@ -447,6 +441,20 @@ function startTest(){
   document.getElementById('intro-page').style.display='none';
   document.getElementById('quiz-page').style.display='block';
   document.getElementById('progress-text').textContent='1/20';
+
+  // 광고 동적 로드 (숨겨진 상태에서 로드하면 안뜨므로 여기서 삽입)
+  const adWrap = document.getElementById('quiz-ad-wrap');
+  adWrap.innerHTML = `
+    <ins class="kakao_ad_area" style="display:none;"
+      data-ad-unit="DAN-KaaDz3x8sCk02Fgp"
+      data-ad-width="320"
+      data-ad-height="100"></ins>`;
+  const s = document.createElement('script');
+  s.type = 'text/javascript';
+  s.src = '//t1.kakaocdn.net/kas/static/ba.min.js';
+  s.async = true;
+  adWrap.appendChild(s);
+
   renderQuestion();
 }
 
