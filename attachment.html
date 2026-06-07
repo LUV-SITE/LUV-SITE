@@ -10,10 +10,6 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-
-  <!-- ★ 카카오 광고 SDK: 페이지 최초 1회만 head에서 로드 -->
-  <script async src="//t1.kakaocdn.net/kas/static/ba.min.js"></script>
-
   <style>
     :root{--pink:#ff6b9d;--pink-dark:#d63f7a;--pink-pale:#fff0f5;--peach:#ffb347;--bg:#fff8fb;--text:#1a1a2e;--muted:#999;--card:#fff;--max:430px;--radius:20px;}
     *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
@@ -23,13 +19,9 @@
     .back-btn{width:36px;height:36px;border-radius:50%;border:none;background:#f5f5f5;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
     .top-title{font-size:15px;font-weight:700;}
     .top-right{font-size:12px;color:var(--muted);font-weight:600;}
-
-    /* 광고 - 둥글기 없음 */
     .ad-slot{display:block;overflow:visible;}
     .ad-50{height:50px;margin:8px 16px 0;}
     .ad-100{height:100px;margin:8px 16px 0;}
-
-    /* 인트로 */
     .intro{padding:24px 20px 8px;text-align:center;}
     .intro-emoji{font-size:52px;margin-bottom:12px;display:block;animation:float 3s ease-in-out infinite;}
     @keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
@@ -37,14 +29,10 @@
     .intro-desc{font-size:13px;color:var(--muted);line-height:1.8;margin-bottom:20px;}
     .start-btn{display:block;width:calc(100% - 32px);margin:0 16px;padding:16px;border:none;border-radius:var(--radius);background:linear-gradient(135deg,var(--pink),var(--pink-dark));color:white;font-family:inherit;font-size:16px;font-weight:700;cursor:pointer;}
     .start-btn:active{opacity:0.85;}
-
-    /* 진행바 */
     .progress-wrap{padding:16px 20px 0;}
     .progress-info{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:8px;}
     .progress-track{height:6px;background:#f0f0f0;border-radius:100px;overflow:hidden;}
     .progress-fill{height:100%;background:linear-gradient(90deg,var(--pink),var(--peach));border-radius:100px;transition:width 0.4s ease;}
-
-    /* 질문 */
     .question-wrap{padding:20px 16px 0;}
     .q-category{font-size:11px;font-weight:700;color:var(--pink);letter-spacing:1.5px;margin-bottom:8px;text-transform:uppercase;}
     .q-text{font-size:17px;font-weight:700;line-height:1.6;margin-bottom:20px;word-break:keep-all;}
@@ -60,8 +48,6 @@
     .next-btn{display:block;width:calc(100% - 32px);margin:20px 16px 0;padding:15px;border:none;border-radius:var(--radius);background:linear-gradient(135deg,var(--pink),var(--pink-dark));color:white;font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;opacity:0.4;pointer-events:none;transition:all 0.2s;}
     .next-btn.active{opacity:1;pointer-events:all;}
     .next-btn.active:active{opacity:0.85;}
-
-    /* 결과 */
     #result-page{display:none;}
     #save-wrap{background:var(--bg);padding-bottom:4px;}
     .result-header{padding:24px 20px 0;text-align:center;}
@@ -130,9 +116,7 @@
     <span class="top-right" id="progress-text"></span>
   </div>
 
-  <!-- ════════════════════════════════
-       인트로 페이지
-       ════════════════════════════════ -->
+  <!-- 인트로 -->
   <div id="intro-page">
     <div class="intro">
       <span class="intro-emoji">💝</span>
@@ -144,27 +128,21 @@
         4가지 유형 중 나는 어떤 타입일까요?
       </div>
     </div>
-
-    <!-- 인트로 50 배너 -->
-    <div class="ad-slot ad-50">
+    <!-- 인트로 광고: 페이지 로드 시 바로 DOM에 있으므로 SDK가 정상 스캔 -->
+    <div class="ad-slot ad-50" id="intro-ad-50">
       <ins class="kakao_ad_area" style="display:none;"
         data-ad-unit="DAN-6iw5gO4mKLgRJllI"
         data-ad-width="320" data-ad-height="50"></ins>
     </div>
-
     <button class="start-btn" onclick="startTest()" style="margin-top:16px;">💝 테스트 시작하기</button>
-
-    <!-- 인트로 100 배너 -->
-    <div class="ad-slot ad-100" style="margin-top:12px;">
+    <div class="ad-slot ad-100" id="intro-ad-100" style="margin-top:12px;">
       <ins class="kakao_ad_area" style="display:none;"
         data-ad-unit="DAN-scTitgt243zKHDwP"
         data-ad-width="320" data-ad-height="100"></ins>
     </div>
   </div>
 
-  <!-- ════════════════════════════════
-       질문 페이지
-       ════════════════════════════════ -->
+  <!-- 질문 -->
   <div id="quiz-page" style="display:none;">
     <div class="progress-wrap">
       <div class="progress-info">
@@ -184,31 +162,14 @@
       </div>
     </div>
     <button class="next-btn" id="next-btn" onclick="nextQuestion()">다음 →</button>
-
-    <!-- ★ 질문 [다음] 버튼 아래 광고 2종 — 항상 DOM에 존재, 처음부터 ins 태그 배치 -->
-    <div class="ad-slot ad-50" style="margin-top:12px;">
-      <ins class="kakao_ad_area" style="display:none;"
-        data-ad-unit="DAN-6iw5gO4mKLgRJllI"
-        data-ad-width="320" data-ad-height="50"></ins>
-    </div>
-    <div class="ad-slot ad-100" style="margin-top:8px;">
-      <ins class="kakao_ad_area" style="display:none;"
-        data-ad-unit="DAN-scTitgt243zKHDwP"
-        data-ad-width="320" data-ad-height="100"></ins>
-    </div>
+    <!-- 질문 광고: loadAdSlot()으로 페이지 전환 시 ins 교체 + script 재삽입 -->
+    <div class="ad-slot ad-50" style="margin-top:12px;" id="quiz-ad-50"></div>
+    <div class="ad-slot ad-100" style="margin-top:8px;" id="quiz-ad-100"></div>
   </div>
 
-  <!-- ════════════════════════════════
-       결과 페이지
-       ════════════════════════════════ -->
+  <!-- 결과 -->
   <div id="result-page">
-    <!-- ★ 결과 상단 50 배너 — 항상 DOM에 존재 -->
-    <div class="ad-slot ad-50">
-      <ins class="kakao_ad_area" style="display:none;"
-        data-ad-unit="DAN-6iw5gO4mKLgRJllI"
-        data-ad-width="320" data-ad-height="50"></ins>
-    </div>
-
+    <div class="ad-slot ad-50" id="result-ad-50"></div>
     <div id="save-wrap">
       <div class="result-header" id="result-header"></div>
       <div class="result-desc-box" id="result-desc-box"></div>
@@ -232,13 +193,8 @@
       </div>
       <div class="watermark">💗 LUV SITE</div>
     </div>
-
-    <!-- ★ 결과 중간 100 배너 — 항상 DOM에 존재 -->
-    <div class="ad-slot ad-100" style="margin-top:8px;">
-      <ins class="kakao_ad_area" style="display:none;"
-        data-ad-unit="DAN-scTitgt243zKHDwP"
-        data-ad-width="320" data-ad-height="100"></ins>
-    </div>
+    <!-- 결과 광고: loadAdSlot()으로 페이지 전환 시 ins 교체 + script 재삽입 -->
+    <div class="ad-slot ad-100" style="margin-top:8px;" id="result-ad-100"></div>
 
     <div class="action-section" style="margin-top:8px;">
       <div class="share-label">결과 공유하기 💌</div>
@@ -281,6 +237,49 @@
 </div>
 
 <script>
+/* ════════════════════════════════════════════════════════
+   카카오 AdFit 광고 로드 헬퍼
+   ────────────────────────────────────────────────────────
+   핵심 원리:
+   - SDK(ba.min.js)는 페이지 로드 시 DOM을 1회 스캔하여
+     ins.kakao_ad_area 태그에 광고를 채움
+   - display:none 부모 안의 ins는 스캔 대상에서 제외됨
+   - 따라서 숨겨진 페이지의 광고 슬롯은 페이지가 보여진 뒤
+     ins 태그를 새로 생성하고 script를 새 노드로 append해야 함
+   - createElement로 만든 script는 동일 src여도 새 노드이므로
+     브라우저가 재실행(re-evaluate)함 → SDK가 새 ins를 스캔
+   ════════════════════════════════════════════════════════ */
+function loadAdSlot(containerId, unit, width, height) {
+  var wrap = document.getElementById(containerId);
+  if (!wrap) return;
+  /* 1. 기존 내용 제거 후 새 ins 태그 삽입 */
+  wrap.innerHTML =
+    '<ins class="kakao_ad_area" style="display:none;"' +
+    ' data-ad-unit="' + unit + '"' +
+    ' data-ad-width="' + width + '"' +
+    ' data-ad-height="' + height + '"></ins>';
+  /* 2. script를 createElement로 새 노드 생성 → SDK 재실행 */
+  var s = document.createElement('script');
+  s.type = 'text/javascript';
+  s.src = '//t1.kakaocdn.net/kas/static/ba.min.js';
+  s.charset = 'utf-8';
+  wrap.appendChild(s);
+}
+
+/* 인트로 광고: 페이지 로드 시 바로 보이는 영역이므로
+   head에서 SDK를 1회 로드하여 처리 */
+(function() {
+  var s = document.createElement('script');
+  s.type = 'text/javascript';
+  s.src = '//t1.kakaocdn.net/kas/static/ba.min.js';
+  s.charset = 'utf-8';
+  s.async = true;
+  document.head.appendChild(s);
+})();
+
+/* ════════════════════════════════════════════════════════
+   퀴즈 데이터
+   ════════════════════════════════════════════════════════ */
 const QUESTIONS = [
   {id:1,type:'anxiety',category:'관계 불안',text:'연인에게 연락이 오지 않으면 불안하고 걱정이 된다.'},
   {id:2,type:'anxiety',category:'관계 불안',text:'연인이 나를 정말 사랑하는지 자주 의심이 든다.'},
@@ -331,6 +330,11 @@ function startTest(){
   document.getElementById('quiz-page').style.display='block';
   document.getElementById('progress-text').textContent='1/20';
   renderQuestion();
+  /* 질문 페이지가 display:block 된 직후 광고 로드 */
+  setTimeout(function(){
+    loadAdSlot('quiz-ad-50',  'DAN-6iw5gO4mKLgRJllI', '320', '50');
+    loadAdSlot('quiz-ad-100', 'DAN-scTitgt243zKHDwP',  '320', '100');
+  }, 100);
 }
 
 function renderQuestion(){
@@ -383,7 +387,7 @@ function showResult(){
   });
   const aP=Math.round((anxietyScore-10)/40*100);
   const vP=Math.round((avoidanceScore-10)/40*100);
-  if(!( aP>=50) && !(vP>=50)) resultType='secure';
+  if(!(aP>=50) && !(vP>=50)) resultType='secure';
   else if(aP>=50 && !(vP>=50)) resultType='anxious';
   else if(!(aP>=50) && vP>=50) resultType='avoidant';
   else resultType='disorganized';
@@ -418,6 +422,12 @@ function showResult(){
   },400);
 
   window.scrollTo({top:0,behavior:'smooth'});
+
+  /* 결과 페이지가 display:block 된 직후 광고 로드 */
+  setTimeout(function(){
+    loadAdSlot('result-ad-50',  'DAN-6iw5gO4mKLgRJllI', '320', '50');
+    loadAdSlot('result-ad-100', 'DAN-scTitgt243zKHDwP',  '320', '100');
+  }, 100);
 }
 
 function restartTest(){
