@@ -10,30 +10,22 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <!-- 카카오 애드핏 SDK - 딱 1번만 로드 -->
+  <script type="text/javascript" src="//t1.kakaocdn.net/kas/static/ba.min.js" async></script>
   <style>
-    :root{
-      --pink:#ff6b9d;--pink-dark:#d63f7a;--pink-pale:#fff0f5;
-      --peach:#ffb347;--purple:#a78bfa;--purple-pale:#f5f3ff;
-      --teal:#2dd4bf;--teal-pale:#f0fdfa;
-      --coral:#ff6b6b;--coral-pale:#fff5f5;
-      --bg:#fff8fb;--text:#1a1a2e;--muted:#999;--card:#fff;
-      --max:430px;--radius:20px;
-    }
+    :root{--pink:#ff6b9d;--pink-dark:#d63f7a;--pink-pale:#fff0f5;--peach:#ffb347;--bg:#fff8fb;--text:#1a1a2e;--muted:#999;--card:#fff;--max:430px;--radius:20px;}
     *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
     body{font-family:'Gowun Dodum','Apple SD Gothic Neo',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column;align-items:center;}
-    .wrap{width:100%;max-width:var(--max);padding-bottom:70px;}
-
-    /* 상단바 */
+    .wrap{width:100%;max-width:var(--max);padding-bottom:40px;}
     .top-bar{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;background:rgba(255,255,255,0.95);backdrop-filter:blur(8px);position:sticky;top:0;z-index:100;border-bottom:1px solid #ffeef5;}
     .back-btn{width:36px;height:36px;border-radius:50%;border:none;background:#f5f5f5;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
     .top-title{font-size:15px;font-weight:700;}
     .top-right{font-size:12px;color:var(--muted);font-weight:600;}
 
-    /* 광고 */
+    /* 광고 - 둥글기 없음 */
     .ad-slot{display:block;overflow:visible;}
-    .ad-quiz{height:100px;margin:16px 16px 0;}
-    .ad-top{height:50px;margin:8px 16px 0;}
-    .ad-mid{height:250px;margin:16px 16px 0;}
+    .ad-50{height:50px;margin:8px 16px 0;}
+    .ad-100{height:100px;margin:8px 16px 0;}
 
     /* 인트로 */
     .intro{padding:24px 20px 8px;text-align:center;}
@@ -50,44 +42,32 @@
     .progress-track{height:6px;background:#f0f0f0;border-radius:100px;overflow:hidden;}
     .progress-fill{height:100%;background:linear-gradient(90deg,var(--pink),var(--peach));border-radius:100px;transition:width 0.4s ease;}
 
-    /* 질문 카드 */
+    /* 질문 */
     .question-wrap{padding:20px 16px 0;}
     .q-category{font-size:11px;font-weight:700;color:var(--pink);letter-spacing:1.5px;margin-bottom:8px;text-transform:uppercase;}
     .q-text{font-size:17px;font-weight:700;line-height:1.6;margin-bottom:20px;word-break:keep-all;}
-
-    /* 리커트 척도 */
     .likert-wrap{display:flex;flex-direction:column;gap:10px;}
     .likert-labels{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);padding:0 4px;margin-bottom:2px;}
     .likert-btns{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;}
-    .likert-btn{
-      padding:14px 4px;border-radius:14px;border:1.5px solid #f0f0f0;
-      background:white;font-family:inherit;font-size:13px;font-weight:700;
-      cursor:pointer;transition:all 0.15s;color:var(--muted);
-      display:flex;flex-direction:column;align-items:center;gap:4px;
-    }
+    .likert-btn{padding:14px 4px;border-radius:14px;border:1.5px solid #f0f0f0;background:white;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;transition:all 0.15s;color:var(--muted);display:flex;flex-direction:column;align-items:center;gap:4px;}
     .likert-btn .num{font-size:16px;font-weight:800;color:var(--text);}
     .likert-btn .label{font-size:10px;}
     .likert-btn:active{transform:scale(0.95);}
     .likert-btn.selected{background:var(--pink);border-color:var(--pink);color:white;transform:scale(1.05);box-shadow:0 4px 12px rgba(255,107,157,0.3);}
     .likert-btn.selected .num{color:white;}
-
-    /* 다음 버튼 */
     .next-btn{display:block;width:calc(100% - 32px);margin:20px 16px 0;padding:15px;border:none;border-radius:var(--radius);background:linear-gradient(135deg,var(--pink),var(--pink-dark));color:white;font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;opacity:0.4;pointer-events:none;transition:all 0.2s;}
     .next-btn.active{opacity:1;pointer-events:all;}
     .next-btn.active:active{opacity:0.85;}
 
-    /* 결과 페이지 */
+    /* 결과 */
     #result-page{display:none;}
     #save-wrap{background:var(--bg);padding-bottom:4px;}
-
     .result-header{padding:24px 20px 0;text-align:center;}
     .result-type-badge{display:inline-flex;align-items:center;gap:6px;padding:6px 16px;border-radius:100px;font-size:12px;font-weight:700;color:white;margin-bottom:16px;}
     .result-emoji-big{font-size:64px;display:block;margin-bottom:12px;animation:float 3s ease-in-out infinite;}
     .result-type-name{font-size:26px;font-weight:800;margin-bottom:6px;}
     .result-type-sub{font-size:14px;font-weight:600;margin-bottom:16px;}
     .result-desc-box{background:rgba(255,255,255,0.8);border-radius:16px;padding:16px;margin:0 16px;font-size:14px;color:#444;line-height:1.9;text-align:left;}
-
-    /* 점수 바 */
     .score-section{margin:16px;}
     .score-card{background:white;border-radius:var(--radius);border:1.5px solid #ffe0ec;padding:18px 20px;}
     .score-title{font-size:14px;font-weight:700;margin-bottom:14px;}
@@ -98,26 +78,18 @@
     .score-val{font-size:12px;font-weight:700;padding:2px 8px;border-radius:100px;color:white;}
     .score-track{height:10px;background:#f0f0f0;border-radius:100px;overflow:hidden;}
     .score-fill{height:100%;border-radius:100px;width:0;transition:width 1.2s cubic-bezier(.25,.8,.25,1);}
-
-    /* 특징 섹션 */
     .traits-section{margin:0 16px 16px;}
     .traits-card{background:white;border-radius:var(--radius);border:1.5px solid #ffe0ec;padding:18px 20px;}
     .traits-title{font-size:14px;font-weight:700;margin-bottom:14px;}
     .trait-item{display:flex;gap:10px;margin-bottom:12px;font-size:13px;color:#444;line-height:1.7;align-items:flex-start;}
     .trait-item:last-child{margin-bottom:0;}
     .trait-icon{font-size:18px;flex-shrink:0;margin-top:1px;}
-
-    /* 연애 팁 */
     .tips-section{margin:0 16px 0;}
     .tips-card{background:white;border-radius:var(--radius);border:1.5px solid #ffe0ec;padding:18px 20px;}
     .tips-title{font-size:14px;font-weight:700;margin-bottom:14px;}
     .tip-item{display:flex;gap:10px;margin-bottom:10px;font-size:13px;color:#444;line-height:1.7;}
     .tip-num{background:var(--pink);color:white;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;margin-top:2px;}
-
-    /* 워터마크 */
     .watermark{text-align:center;padding:12px 0 6px;font-size:11px;color:#ffb3cc;letter-spacing:1px;font-weight:700;}
-
-    /* 공유/저장 버튼 */
     .action-section{margin:16px;}
     .share-label{font-size:13px;color:var(--muted);text-align:center;font-weight:600;margin-bottom:12px;}
     .share-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px;}
@@ -129,8 +101,6 @@
     .btn-primary:active{opacity:0.85;}
     .btn-secondary{padding:14px;border:1.5px solid var(--pink);background:white;color:var(--pink);border-radius:14px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;}
     .btn-save{width:100%;padding:14px;border:1.5px solid #e0e0e0;background:white;color:var(--text);border-radius:14px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:6px;}
-
-    /* 추천 */
     .rec-section{margin:0 16px;}
     .rec-title{font-size:16px;font-weight:700;margin-bottom:12px;}
     .rec-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
@@ -139,27 +109,14 @@
     .rec-emoji{font-size:26px;margin-bottom:6px;display:block;}
     .rec-name{font-size:13px;font-weight:700;margin-bottom:3px;line-height:1.3;}
     .rec-sub{font-size:11px;color:var(--muted);}
-
-    /* 토스트 */
-    #toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);background:rgba(0,0,0,0.8);color:white;padding:10px 22px;border-radius:100px;font-size:13px;opacity:0;transition:all 0.3s;pointer-events:none;z-index:9999;white-space:nowrap;}
+    #toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(20px);background:rgba(0,0,0,0.8);color:white;padding:10px 22px;border-radius:100px;font-size:13px;opacity:0;transition:all 0.3s;pointer-events:none;z-index:9999;white-space:nowrap;}
     #toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
     #save-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:9999;align-items:center;justify-content:center;flex-direction:column;gap:14px;}
     #save-overlay.show{display:flex;}
     #save-overlay span{color:white;font-size:15px;font-weight:600;}
     @keyframes spin{to{transform:rotate(360deg);}}
-
-    /* 애니메이션 */
     .fade-in{animation:fadeIn 0.3s ease;}
     @keyframes fadeIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
-
-    /* 하단 고정 광고 */
-    .sticky-ad{
-      position:fixed;bottom:0;left:50%;transform:translateX(-50%);
-      width:100%;max-width:430px;height:50px;z-index:999;
-      background:white;border-top:1px solid #f0f0f0;
-      display:flex;align-items:center;justify-content:center;
-      overflow:visible;
-    }
   </style>
 </head>
 <body>
@@ -178,24 +135,27 @@
       <div class="intro-title">나의 애착유형은<br>무엇일까요?</div>
       <div class="intro-desc">
         심리학자 존 볼비의 애착이론 기반<br>
-        20문항으로 알아보는 나의 연애 애착 스타일<br>
-        <br>
+        20문항으로 알아보는 나의 연애 애착 스타일<br><br>
         <strong>안정형 · 불안형 · 회피형 · 혼란형</strong><br>
         4가지 유형 중 나는 어떤 타입일까요?
       </div>
     </div>
-    <button class="start-btn" onclick="startTest()">💝 테스트 시작하기</button>
-    <!-- 광고 상단 -->
-    <div class="ad-slot ad-top" style="margin-top:16px;">
+    <!-- 인트로 50 배너 (정적 - 항상 보임) -->
+    <div class="ad-slot ad-50">
       <ins class="kakao_ad_area" style="display:none;"
         data-ad-unit="DAN-6iw5gO4mKLgRJllI"
-        data-ad-width="320"
-        data-ad-height="50"></ins>
-      <script type="text/javascript" src="//t1.kakaocdn.net/kas/static/ba.min.js" async></script>
+        data-ad-width="320" data-ad-height="50"></ins>
+    </div>
+    <button class="start-btn" onclick="startTest()" style="margin-top:16px;">💝 테스트 시작하기</button>
+    <!-- 인트로 100 배너 (정적) -->
+    <div class="ad-slot ad-100" style="margin-top:12px;">
+      <ins class="kakao_ad_area" style="display:none;"
+        data-ad-unit="DAN-scTitgt243zKHDwP"
+        data-ad-width="320" data-ad-height="100"></ins>
     </div>
   </div>
 
-  <!-- 질문 페이지 -->
+  <!-- 질문 -->
   <div id="quiz-page" style="display:none;">
     <div class="progress-wrap">
       <div class="progress-info">
@@ -210,21 +170,19 @@
       <div class="q-category" id="q-category"></div>
       <div class="q-text" id="q-text"></div>
       <div class="likert-wrap">
-        <div class="likert-labels">
-          <span>전혀 아니다</span>
-          <span>매우 그렇다</span>
-        </div>
+        <div class="likert-labels"><span>전혀 아니다</span><span>매우 그렇다</span></div>
         <div class="likert-btns" id="likert-btns"></div>
       </div>
     </div>
     <button class="next-btn" id="next-btn" onclick="nextQuestion()">다음 →</button>
-
-    <!-- 질문 하단 광고 (320×100) -->
-    <div class="ad-slot ad-quiz" id="quiz-ad-wrap"></div>
+    <!-- 질문 100 배너 (동적 로드) -->
+    <div class="ad-slot ad-100" id="quiz-ad-wrap"></div>
   </div>
 
-  <!-- 결과 페이지 -->
+  <!-- 결과 -->
   <div id="result-page">
+    <!-- 결과 50 배너 (동적 로드) -->
+    <div class="ad-slot ad-50" id="result-ad-50"></div>
     <div id="save-wrap">
       <div class="result-header" id="result-header"></div>
       <div class="result-desc-box" id="result-desc-box"></div>
@@ -248,17 +206,10 @@
       </div>
       <div class="watermark">💗 LUV SITE</div>
     </div>
+    <!-- 결과 100 배너 (동적 로드) -->
+    <div class="ad-slot ad-100" id="result-ad-100"></div>
 
-    <!-- 광고 중간 -->
-    <div class="ad-slot ad-mid">
-      <ins class="kakao_ad_area" style="display:none;"
-        data-ad-unit="DAN-scTitgt243zKHDwP"
-        data-ad-width="320"
-        data-ad-height="100"></ins>
-      <script type="text/javascript" src="//t1.kakaocdn.net/kas/static/ba.min.js" async></script>
-    </div>
-
-    <div class="action-section">
+    <div class="action-section" style="margin-top:8px;">
       <div class="share-label">결과 공유하기 💌</div>
       <div class="share-grid">
         <button class="share-btn" onclick="shareKakao()"><span class="icon">💬</span>카카오</button>
@@ -299,334 +250,163 @@
 </div>
 
 <script>
-// =====================================================
-// 심리학 기반 20문항 (불안 10문항 + 회피 10문항)
-// 존 볼비 애착이론 + ECR(경험적 친밀관계 척도) 기반
-// =====================================================
 const QUESTIONS = [
-  // 불안 척도 (Anxiety) — 버림받음 공포, 집착
-  {id:1, type:'anxiety', category:'관계 불안', text:'연인에게 연락이 오지 않으면 불안하고 걱정이 된다.'},
-  {id:2, type:'anxiety', category:'관계 불안', text:'연인이 나를 정말 사랑하는지 자주 의심이 든다.'},
-  {id:3, type:'anxiety', category:'버림받음 공포', text:'연인이 나를 떠날 것 같은 두려움을 자주 느낀다.'},
-  {id:4, type:'anxiety', category:'버림받음 공포', text:'연인이 다른 사람에게 관심을 보이면 심하게 불안해진다.'},
-  {id:5, type:'anxiety', category:'관계 집착', text:'연인과 함께 있을 때도 충분히 가깝다는 느낌이 들지 않는다.'},
-  {id:6, type:'anxiety', category:'관계 집착', text:'연인이 나를 원하는 만큼 원하지 않는 것 같아 걱정된다.'},
-  {id:7, type:'anxiety', category:'감정 기복', text:'연인의 작은 행동 하나에도 감정이 크게 흔들린다.'},
-  {id:8, type:'anxiety', category:'감정 기복', text:'연인에게 거절당하는 것이 너무 두려워 내 감정을 숨길 때가 있다.'},
-  {id:9, type:'anxiety', category:'확인 욕구', text:'연인에게 사랑받고 있다는 확인을 자주 받고 싶다.'},
-  {id:10, type:'anxiety', category:'확인 욕구', text:'연인이 나에게 화났을 때 어떻게든 빨리 해결하려고 한다.'},
-
-  // 회피 척도 (Avoidance) — 친밀감 회피, 독립 과잉
-  {id:11, type:'avoidance', category:'친밀감 회피', text:'연인에게 내 감정을 솔직하게 표현하는 것이 불편하다.'},
-  {id:12, type:'avoidance', category:'친밀감 회피', text:'연인과 너무 가까워지면 오히려 불편하고 답답하다.'},
-  {id:13, type:'avoidance', category:'의존 거부', text:'연인에게 도움을 요청하거나 의지하는 것이 어렵다.'},
-  {id:14, type:'avoidance', category:'의존 거부', text:'연인이 내 일에 관여하려 하면 거리를 두고 싶어진다.'},
-  {id:15, type:'avoidance', category:'독립 과잉', text:'연인 없이도 완전히 혼자 지낼 수 있다고 생각한다.'},
-  {id:16, type:'avoidance', category:'독립 과잉', text:'감정적으로 누군가에게 기대는 것은 약한 것이라 생각한다.'},
-  {id:17, type:'avoidance', category:'갈등 회피', text:'연인과 갈등이 생기면 대화보다 혼자 시간을 갖는 편이다.'},
-  {id:18, type:'avoidance', category:'갈등 회피', text:'연인이 감정적으로 힘들다고 할 때 어떻게 반응해야 할지 모르겠다.'},
-  {id:19, type:'avoidance', category:'정서적 거리', text:'연인에게 "사랑해"라고 말하는 것이 쉽지 않다.'},
-  {id:20, type:'avoidance', category:'정서적 거리', text:'연인이 나에게 너무 많이 기대면 부담스럽다.'},
+  {id:1,type:'anxiety',category:'관계 불안',text:'연인에게 연락이 오지 않으면 불안하고 걱정이 된다.'},
+  {id:2,type:'anxiety',category:'관계 불안',text:'연인이 나를 정말 사랑하는지 자주 의심이 든다.'},
+  {id:3,type:'anxiety',category:'버림받음 공포',text:'연인이 나를 떠날 것 같은 두려움을 자주 느낀다.'},
+  {id:4,type:'anxiety',category:'버림받음 공포',text:'연인이 다른 사람에게 관심을 보이면 심하게 불안해진다.'},
+  {id:5,type:'anxiety',category:'관계 집착',text:'연인과 함께 있을 때도 충분히 가깝다는 느낌이 들지 않는다.'},
+  {id:6,type:'anxiety',category:'관계 집착',text:'연인이 나를 원하는 만큼 원하지 않는 것 같아 걱정된다.'},
+  {id:7,type:'anxiety',category:'감정 기복',text:'연인의 작은 행동 하나에도 감정이 크게 흔들린다.'},
+  {id:8,type:'anxiety',category:'감정 기복',text:'연인에게 거절당하는 것이 너무 두려워 내 감정을 숨길 때가 있다.'},
+  {id:9,type:'anxiety',category:'확인 욕구',text:'연인에게 사랑받고 있다는 확인을 자주 받고 싶다.'},
+  {id:10,type:'anxiety',category:'확인 욕구',text:'연인이 나에게 화났을 때 어떻게든 빨리 해결하려고 한다.'},
+  {id:11,type:'avoidance',category:'친밀감 회피',text:'연인에게 내 감정을 솔직하게 표현하는 것이 불편하다.'},
+  {id:12,type:'avoidance',category:'친밀감 회피',text:'연인과 너무 가까워지면 오히려 불편하고 답답하다.'},
+  {id:13,type:'avoidance',category:'의존 거부',text:'연인에게 도움을 요청하거나 의지하는 것이 어렵다.'},
+  {id:14,type:'avoidance',category:'의존 거부',text:'연인이 내 일에 관여하려 하면 거리를 두고 싶어진다.'},
+  {id:15,type:'avoidance',category:'독립 과잉',text:'연인 없이도 완전히 혼자 지낼 수 있다고 생각한다.'},
+  {id:16,type:'avoidance',category:'독립 과잉',text:'감정적으로 누군가에게 기대는 것은 약한 것이라 생각한다.'},
+  {id:17,type:'avoidance',category:'갈등 회피',text:'연인과 갈등이 생기면 대화보다 혼자 시간을 갖는 편이다.'},
+  {id:18,type:'avoidance',category:'갈등 회피',text:'연인이 감정적으로 힘들다고 할 때 어떻게 반응해야 할지 모르겠다.'},
+  {id:19,type:'avoidance',category:'정서적 거리',text:'연인에게 "사랑해"라고 말하는 것이 쉽지 않다.'},
+  {id:20,type:'avoidance',category:'정서적 거리',text:'연인이 나에게 너무 많이 기대면 부담스럽다.'},
 ];
 
-// =====================================================
-// 4가지 애착유형 결과 데이터
-// =====================================================
 const RESULTS = {
-  secure: {
-    name: '안정형',
-    sub: '건강하고 균형 잡힌 애착',
-    emoji: '🟢',
-    bigEmoji: '💚',
-    color: '#22c55e',
-    paleColor: '#f0fdf4',
-    badge: '안정 애착',
-    desc: `축하해요! 당신은 가장 건강한 애착 유형인 <strong>안정형</strong>이에요.\n\n안정형은 자신과 타인을 모두 긍정적으로 바라봐요. 연인에게 편안하게 의존할 수 있고, 동시에 건강한 독립성도 유지해요. 갈등이 생겨도 차분하게 대화로 해결하려 하고, 상대방의 감정에 공감하면서도 자신의 감정을 잃지 않아요.\n\n어린 시절 일관성 있는 사랑을 받은 사람들에게 많이 나타나는 유형이에요. 연애에서 자연스럽게 친밀감을 나누고 서로를 성장시키는 관계를 만들어가요.`,
-    traits: [
-      {icon:'💚', text:'연인을 믿고 의지하면서도 건강한 독립성을 유지해요'},
-      {icon:'🗣️', text:'갈등이 생기면 감정적이지 않게 대화로 해결해요'},
-      {icon:'🤗', text:'연인의 감정에 공감하고 지지해줄 수 있어요'},
-      {icon:'⚖️', text:'혼자만의 시간과 함께하는 시간의 균형을 잘 맞춰요'},
-      {icon:'😊', text:'관계에서 과도한 불안이나 집착 없이 편안함을 느껴요'},
-    ],
-    tips: [
-      '지금의 건강한 패턴을 유지하는 것이 가장 중요해요',
-      '불안형이나 회피형 파트너를 만나면 이해와 인내가 필요할 수 있어요',
-      '상대방의 애착유형을 이해하면 더 깊은 관계를 만들 수 있어요',
-    ],
-    scores: {anxiety: 20, avoidance: 20}
-  },
-  anxious: {
-    name: '불안형',
-    sub: '사랑받고 싶은 마음이 가득한',
-    emoji: '🟡',
-    bigEmoji: '💛',
-    color: '#f59e0b',
-    paleColor: '#fffbeb',
-    badge: '불안 애착',
-    desc: `당신은 <strong>불안형 애착</strong>을 가지고 있어요.\n\n불안형은 연인을 깊이 사랑하고 가까이 있고 싶어하지만, 늘 버림받을 것 같은 두려움이 마음 한켠에 있어요. 연락이 없으면 불안하고, 상대방의 작은 행동에도 크게 의미를 부여하게 돼요.\n\n이런 패턴은 어린 시절 일관성 없는 양육에서 비롯되는 경우가 많아요. "사랑받을 자격이 있을까?" 라는 의문이 마음 깊이 자리잡고 있어요. 하지만 이것은 고칠 수 있어요. 자신을 사랑하는 법을 배우는 것이 시작이에요.`,
-    traits: [
-      {icon:'💛', text:'연인에 대한 깊은 애정과 헌신을 가지고 있어요'},
-      {icon:'😰', text:'연락이 없거나 반응이 없으면 불안감이 커져요'},
-      {icon:'🔍', text:'상대방의 말과 행동에서 의미를 과도하게 분석해요'},
-      {icon:'💔', text:'거절이나 이별에 대한 두려움이 행동에 영향을 줘요'},
-      {icon:'🤲', text:'확인과 안심을 자주 필요로 하는 편이에요'},
-    ],
-    tips: [
-      '자신의 불안이 현재 상황이 아닌 과거 경험에서 온 것임을 인식해봐요',
-      '파트너에게 확인을 요청하기 전, 잠깐 멈추고 스스로를 안심시키는 연습을 해봐요',
-      '혼자서도 충분히 괜찮다는 것을 경험하는 시간을 가져봐요',
-    ],
-    scores: {anxiety: 70, avoidance: 30}
-  },
-  avoidant: {
-    name: '회피형',
-    sub: '독립적이지만 외로운',
-    emoji: '🔵',
-    bigEmoji: '💙',
-    color: '#3b82f6',
-    paleColor: '#eff6ff',
-    badge: '회피 애착',
-    desc: `당신은 <strong>회피형 애착</strong>을 가지고 있어요.\n\n회피형은 강한 독립심을 가지고 있고, 감정적 친밀감이 가까워질수록 오히려 불편함을 느껴요. 연인이 필요 이상으로 다가오거나 감정을 표현해달라고 하면 벽을 치게 돼요.\n\n이것은 어린 시절 감정 표현이 무시되거나 "스스로 해결해야 한다"는 환경에서 자란 경우 많이 나타나요. 친밀감을 원하면서도 두려워서 밀어내는 패턴이에요. 감정을 표현하는 연습이 관계를 변화시킬 수 있어요.`,
-    traits: [
-      {icon:'💙', text:'강한 독립심과 자기 충족감을 가지고 있어요'},
-      {icon:'🚪', text:'감정적으로 너무 가까워지면 거리를 두고 싶어져요'},
-      {icon:'🤐', text:'감정 표현이나 취약함을 드러내는 것이 불편해요'},
-      {icon:'🏃', text:'갈등 상황에서 대화보다 혼자만의 시간을 선호해요'},
-      {icon:'🧊', text:'상대방이 더 많이 원할수록 오히려 차갑게 반응하게 돼요'},
-    ],
-    tips: [
-      '감정을 표현하는 것이 약함이 아닌 용기임을 기억해요',
-      '파트너가 가까워지려 할 때 도망치고 싶은 충동을 인식하고 잠시 머물러봐요',
-      '작은 것부터 감정을 표현하는 연습을 해봐요. "오늘 좋았어" 같은 것부터요',
-    ],
-    scores: {anxiety: 25, avoidance: 75}
-  },
-  disorganized: {
-    name: '혼란형',
-    sub: '원하면서도 두려운',
-    emoji: '🔴',
-    bigEmoji: '❤️‍🔥',
-    color: '#ef4444',
-    paleColor: '#fef2f2',
-    badge: '혼란 애착',
-    desc: `당신은 <strong>혼란형 애착</strong>을 가지고 있어요.\n\n혼란형은 친밀감을 원하면서도 동시에 두려워하는 복잡한 내면을 가져요. 연인에게 다가가고 싶으면서도 막상 가까워지면 밀어내고, 멀어지면 다시 불안해지는 패턴이에요. 감정 기복이 크고 관계에서 혼란스러운 느낌을 자주 받아요.\n\n이 유형은 어린 시절 사랑하는 사람으로부터 상처를 받은 경험과 관련이 있어요. 사랑이 곧 상처라는 무의식적인 믿음이 있을 수 있어요. 전문가의 도움을 받으면 크게 변화할 수 있어요.`,
-    traits: [
-      {icon:'❤️‍🔥', text:'연인을 원하면서도 동시에 두려워하는 감정을 느껴요'},
-      {icon:'🌊', text:'감정 기복이 크고 예측하기 어려운 반응을 보여요'},
-      {icon:'🔄', text:'다가가다가 갑자기 멀어지는 패턴이 반복돼요'},
-      {icon:'😕', text:'관계에서 자신이 원하는 것이 무엇인지 혼란스러울 때 있어요'},
-      {icon:'💪', text:'상처받은 경험이 많지만 그만큼 깊은 공감 능력이 있어요'},
-    ],
-    tips: [
-      '혼란스러운 감정 패턴을 이해하기 위해 전문 상담을 받아보는 것을 추천해요',
-      '감정이 격해질 때 즉각 반응하지 말고 잠시 숨 고르기를 해봐요',
-      '자신의 패턴을 인식하는 것 자체가 변화의 시작이에요. 잘 하고 있어요 💪',
-    ],
-    scores: {anxiety: 72, avoidance: 68}
-  }
+  secure:{name:'안정형',sub:'건강하고 균형 잡힌 애착',bigEmoji:'💚',color:'#22c55e',badge:'안정 애착',
+    desc:`축하해요! 당신은 가장 건강한 애착 유형인 <strong>안정형</strong>이에요.\n\n안정형은 자신과 타인을 모두 긍정적으로 바라봐요. 연인에게 편안하게 의존할 수 있고, 동시에 건강한 독립성도 유지해요. 갈등이 생겨도 차분하게 대화로 해결하려 하고, 상대방의 감정에 공감하면서도 자신의 감정을 잃지 않아요.\n\n어린 시절 일관성 있는 사랑을 받은 사람들에게 많이 나타나는 유형이에요.`,
+    traits:[{icon:'💚',text:'연인을 믿고 의지하면서도 건강한 독립성을 유지해요'},{icon:'🗣️',text:'갈등이 생기면 감정적이지 않게 대화로 해결해요'},{icon:'🤗',text:'연인의 감정에 공감하고 지지해줄 수 있어요'},{icon:'⚖️',text:'혼자만의 시간과 함께하는 시간의 균형을 잘 맞춰요'},{icon:'😊',text:'관계에서 과도한 불안이나 집착 없이 편안함을 느껴요'}],
+    tips:['지금의 건강한 패턴을 유지하는 것이 가장 중요해요','불안형이나 회피형 파트너를 만나면 이해와 인내가 필요할 수 있어요','상대방의 애착유형을 이해하면 더 깊은 관계를 만들 수 있어요']},
+  anxious:{name:'불안형',sub:'사랑받고 싶은 마음이 가득한',bigEmoji:'💛',color:'#f59e0b',badge:'불안 애착',
+    desc:`당신은 <strong>불안형 애착</strong>을 가지고 있어요.\n\n불안형은 연인을 깊이 사랑하고 가까이 있고 싶어하지만, 늘 버림받을 것 같은 두려움이 마음 한켠에 있어요. 연락이 없으면 불안하고, 상대방의 작은 행동에도 크게 의미를 부여하게 돼요.\n\n자신을 사랑하는 법을 배우는 것이 시작이에요. 혼자서도 충분히 괜찮다는 것을 경험해봐요.`,
+    traits:[{icon:'💛',text:'연인에 대한 깊은 애정과 헌신을 가지고 있어요'},{icon:'😰',text:'연락이 없거나 반응이 없으면 불안감이 커져요'},{icon:'🔍',text:'상대방의 말과 행동에서 의미를 과도하게 분석해요'},{icon:'💔',text:'거절이나 이별에 대한 두려움이 행동에 영향을 줘요'},{icon:'🤲',text:'확인과 안심을 자주 필요로 하는 편이에요'}],
+    tips:['자신의 불안이 현재 상황이 아닌 과거 경험에서 온 것임을 인식해봐요','파트너에게 확인을 요청하기 전, 잠깐 멈추고 스스로를 안심시키는 연습을 해봐요','혼자서도 충분히 괜찮다는 것을 경험하는 시간을 가져봐요']},
+  avoidant:{name:'회피형',sub:'독립적이지만 외로운',bigEmoji:'💙',color:'#3b82f6',badge:'회피 애착',
+    desc:`당신은 <strong>회피형 애착</strong>을 가지고 있어요.\n\n회피형은 강한 독립심을 가지고 있고, 감정적 친밀감이 가까워질수록 오히려 불편함을 느껴요. 친밀감을 원하면서도 두려워서 밀어내는 패턴이에요.\n\n감정을 표현하는 것이 약함이 아닌 용기임을 기억해요. 작은 것부터 감정을 표현하는 연습을 해봐요.`,
+    traits:[{icon:'💙',text:'강한 독립심과 자기 충족감을 가지고 있어요'},{icon:'🚪',text:'감정적으로 너무 가까워지면 거리를 두고 싶어져요'},{icon:'🤐',text:'감정 표현이나 취약함을 드러내는 것이 불편해요'},{icon:'🏃',text:'갈등 상황에서 대화보다 혼자만의 시간을 선호해요'},{icon:'🧊',text:'상대방이 더 많이 원할수록 오히려 차갑게 반응하게 돼요'}],
+    tips:['감정을 표현하는 것이 약함이 아닌 용기임을 기억해요','파트너가 가까워지려 할 때 도망치고 싶은 충동을 인식하고 잠시 머물러봐요','작은 것부터 감정을 표현하는 연습을 해봐요']},
+  disorganized:{name:'혼란형',sub:'원하면서도 두려운',bigEmoji:'❤️‍🔥',color:'#ef4444',badge:'혼란 애착',
+    desc:`당신은 <strong>혼란형 애착</strong>을 가지고 있어요.\n\n혼란형은 친밀감을 원하면서도 동시에 두려워하는 복잡한 내면을 가져요. 연인에게 다가가고 싶으면서도 막상 가까워지면 밀어내고, 멀어지면 다시 불안해지는 패턴이에요.\n\n자신의 패턴을 인식하는 것 자체가 변화의 시작이에요. 전문가의 도움을 받으면 크게 변화할 수 있어요 💪`,
+    traits:[{icon:'❤️‍🔥',text:'연인을 원하면서도 동시에 두려워하는 감정을 느껴요'},{icon:'🌊',text:'감정 기복이 크고 예측하기 어려운 반응을 보여요'},{icon:'🔄',text:'다가가다가 갑자기 멀어지는 패턴이 반복돼요'},{icon:'😕',text:'관계에서 자신이 원하는 것이 무엇인지 혼란스러울 때 있어요'},{icon:'💪',text:'상처받은 경험이 많지만 그만큼 깊은 공감 능력이 있어요'}],
+    tips:['혼란스러운 감정 패턴을 이해하기 위해 전문 상담을 받아보는 것을 추천해요','감정이 격해질 때 즉각 반응하지 말고 잠시 숨 고르기를 해봐요','자신의 패턴을 인식하는 것 자체가 변화의 시작이에요 💪']}
 };
 
-// =====================================================
-// 테스트 로직
-// =====================================================
-let currentQ = 0;
-let answers = [];
-let selectedAnswer = null;
-let resultType = null;
+let currentQ=0, answers=[], selectedAnswer=null, resultType=null;
+const LIKERT_LABELS=['전혀\n아니다','아니다','보통','그렇다','매우\n그렇다'];
 
-const LIKERT_LABELS = ['전혀\n아니다','아니다','보통','그렇다','매우\n그렇다'];
+// ─── 광고 동적 로드 헬퍼 (script 없이 ins만 삽입 - head에서 SDK 이미 로드) ───
+function loadAd(slotId, unit, width, height){
+  const wrap = document.getElementById(slotId);
+  if(!wrap) return;
+  wrap.innerHTML = `<ins class="kakao_ad_area" style="display:none;"
+    data-ad-unit="${unit}"
+    data-ad-width="${width}"
+    data-ad-height="${height}"></ins>`;
+}
 
 function startTest(){
   document.getElementById('intro-page').style.display='none';
   document.getElementById('quiz-page').style.display='block';
   document.getElementById('progress-text').textContent='1/20';
-
-  // 광고 동적 로드 (숨겨진 상태에서 로드하면 안뜨므로 여기서 삽입)
-  const adWrap = document.getElementById('quiz-ad-wrap');
-  adWrap.innerHTML = `
-    <ins class="kakao_ad_area" style="display:none;"
-      data-ad-unit="DAN-scTitgt243zKHDwP"
-      data-ad-width="320"
-      data-ad-height="100"></ins>`;
-  const s = document.createElement('script');
-  s.type = 'text/javascript';
-  s.src = '//t1.kakaocdn.net/kas/static/ba.min.js';
-  s.async = true;
-  adWrap.appendChild(s);
-
   renderQuestion();
+  // renderQuestion 후에 광고 로드 (DOM 렌더 완료 후)
+  setTimeout(()=> loadAd('quiz-ad-wrap','DAN-scTitgt243zKHDwP','320','100'), 300);
 }
 
 function renderQuestion(){
-  const q = QUESTIONS[currentQ];
-  const wrap = document.getElementById('question-wrap');
-  wrap.classList.remove('fade-in');
-  void wrap.offsetWidth;
-  wrap.classList.add('fade-in');
-
-  document.getElementById('q-category').textContent = q.category;
-  document.getElementById('q-text').textContent = q.text;
-  document.getElementById('q-num').textContent = `${currentQ+1} / ${QUESTIONS.length}`;
-  document.getElementById('q-percent').textContent = Math.round((currentQ/QUESTIONS.length)*100)+'%';
-  document.getElementById('progress-fill').style.width = (currentQ/QUESTIONS.length*100)+'%';
-  document.getElementById('progress-text').textContent = `${currentQ+1}/20`;
-
-  // 리커트 버튼
-  const container = document.getElementById('likert-btns');
-  container.innerHTML = '';
+  const q=QUESTIONS[currentQ];
+  const wrap=document.getElementById('question-wrap');
+  wrap.classList.remove('fade-in'); void wrap.offsetWidth; wrap.classList.add('fade-in');
+  document.getElementById('q-category').textContent=q.category;
+  document.getElementById('q-text').textContent=q.text;
+  document.getElementById('q-num').textContent=`${currentQ+1} / ${QUESTIONS.length}`;
+  document.getElementById('q-percent').textContent=Math.round((currentQ/QUESTIONS.length)*100)+'%';
+  document.getElementById('progress-fill').style.width=(currentQ/QUESTIONS.length*100)+'%';
+  document.getElementById('progress-text').textContent=`${currentQ+1}/20`;
+  const container=document.getElementById('likert-btns');
+  container.innerHTML='';
   for(let i=1;i<=5;i++){
-    const btn = document.createElement('button');
-    btn.className = 'likert-btn' + (answers[currentQ]===i?' selected':'');
-    btn.innerHTML = `<span class="num">${i}</span><span class="label">${LIKERT_LABELS[i-1].replace('\n','<br>')}</span>`;
-    btn.onclick = () => selectAnswer(i);
+    const btn=document.createElement('button');
+    btn.className='likert-btn'+(answers[currentQ]===i?' selected':'');
+    btn.innerHTML=`<span class="num">${i}</span><span class="label">${LIKERT_LABELS[i-1].replace('\n','<br>')}</span>`;
+    btn.onclick=()=>selectAnswer(i);
     container.appendChild(btn);
   }
-
-  selectedAnswer = answers[currentQ] || null;
+  selectedAnswer=answers[currentQ]||null;
   updateNextBtn();
 }
 
 function selectAnswer(val){
-  selectedAnswer = val;
-  answers[currentQ] = val;
-  document.querySelectorAll('.likert-btn').forEach((btn,i)=>{
-    btn.classList.toggle('selected', i+1===val);
-  });
+  selectedAnswer=val; answers[currentQ]=val;
+  document.querySelectorAll('.likert-btn').forEach((btn,i)=>btn.classList.toggle('selected',i+1===val));
   updateNextBtn();
-
-  // 자동 다음 (0.4초 후)
-  setTimeout(()=>{
-    if(answers[currentQ]) nextQuestion();
-  }, 400);
+  setTimeout(()=>{ if(answers[currentQ]) nextQuestion(); },400);
 }
 
 function updateNextBtn(){
-  const btn = document.getElementById('next-btn');
-  btn.classList.toggle('active', !!selectedAnswer);
-  btn.textContent = currentQ===QUESTIONS.length-1 ? '결과 보기 💝' : '다음 →';
+  const btn=document.getElementById('next-btn');
+  btn.classList.toggle('active',!!selectedAnswer);
+  btn.textContent=currentQ===QUESTIONS.length-1?'결과 보기 💝':'다음 →';
 }
 
 function nextQuestion(){
   if(!answers[currentQ]) return;
-  if(currentQ < QUESTIONS.length-1){
-    currentQ++;
-    renderQuestion();
-  } else {
-    showResult();
-  }
+  if(currentQ<QUESTIONS.length-1){ currentQ++; renderQuestion(); }
+  else showResult();
 }
 
-// =====================================================
-// 결과 계산
-// =====================================================
 function showResult(){
-  // 불안 / 회피 점수 계산
-  let anxietyScore = 0, avoidanceScore = 0;
+  let anxietyScore=0, avoidanceScore=0;
   QUESTIONS.forEach((q,i)=>{
-    if(q.type==='anxiety') anxietyScore += (answers[i]||3);
-    else avoidanceScore += (answers[i]||3);
+    if(q.type==='anxiety') anxietyScore+=(answers[i]||3);
+    else avoidanceScore+=(answers[i]||3);
   });
+  const aP=Math.round((anxietyScore-10)/40*100);
+  const vP=Math.round((avoidanceScore-10)/40*100);
+  if(!( aP>=50) && !(vP>=50)) resultType='secure';
+  else if(aP>=50 && !(vP>=50)) resultType='anxious';
+  else if(!(aP>=50) && vP>=50) resultType='avoidant';
+  else resultType='disorganized';
 
-  // 정규화 (10~50점 → 0~100%)
-  const aP = Math.round((anxietyScore-10)/40*100);
-  const vP = Math.round((avoidanceScore-10)/40*100);
-  const anxHigh = aP >= 50;
-  const avoHigh = vP >= 50;
+  const R=RESULTS[resultType];
 
-  // 유형 결정
-  if(!anxHigh && !avoHigh) resultType = 'secure';
-  else if(anxHigh && !avoHigh) resultType = 'anxious';
-  else if(!anxHigh && avoHigh) resultType = 'avoidant';
-  else resultType = 'disorganized';
-
-  const R = RESULTS[resultType];
-
-  // 페이지 전환
- document.getElementById('quiz-page').style.display='none';
+  document.getElementById('quiz-page').style.display='none';
   document.getElementById('result-page').style.display='block';
-
-  // 결과 광고 동적 로드 (300ms 딜레이)
-  setTimeout(()=>{
-  const resultAdWrap = document.getElementById('result-ad-wrap');
-  resultAdWrap.innerHTML = `
-    <ins class="kakao_ad_area" style="display:none;"
-      data-ad-unit="DAN-scTitgt243zKHDwP"
-      data-ad-width="320"
-      data-ad-height="100"></ins>`;
-  const rs = document.createElement('script');
-  rs.type = 'text/javascript';
-  rs.src = '//t1.kakaocdn.net/kas/static/ba.min.js';
-  rs.async = true;
-  resultAdWrap.appendChild(rs);
-  }, 300);
-  resultAdWrap.innerHTML = `
-    <ins class="kakao_ad_area" style="display:none;"
-      data-ad-unit="DAN-scTitgt243zKHDwP"
-      data-ad-width="320"
-      data-ad-height="100"></ins>`;
-  const rs = document.createElement('script');
-  rs.type = 'text/javascript';
-  rs.src = '//t1.kakaocdn.net/kas/static/ba.min.js';
-  rs.async = true;
-  resultAdWrap.appendChild(rs);
   document.getElementById('progress-text').textContent='완료!';
 
-  // 헤더
-  document.getElementById('result-header').innerHTML = `
-    <div style="margin-bottom:6px;">
-      <span class="result-type-badge" style="background:${R.color};">${R.badge}</span>
-    </div>
+  document.getElementById('result-header').innerHTML=`
+    <div style="margin-bottom:6px;"><span class="result-type-badge" style="background:${R.color};">${R.badge}</span></div>
     <span class="result-emoji-big">${R.bigEmoji}</span>
     <div class="result-type-name">${R.name}</div>
-    <div class="result-type-sub" style="color:${R.color};">${R.sub}</div>
-  `;
-
-  // 설명
-  document.getElementById('result-desc-box').innerHTML = R.desc.replace(/\n/g,'<br>');
-
-  // 점수 바
-  const barsData = [
-    {label:'불안 지수', val:aP, color:'#f59e0b'},
-    {label:'회피 지수', val:vP, color:'#3b82f6'},
-    {label:'안정 지수', val:Math.max(0,100-Math.round((aP+vP)/2)), color:'#22c55e'},
+    <div class="result-type-sub" style="color:${R.color};">${R.sub}</div>`;
+  document.getElementById('result-desc-box').innerHTML=R.desc.replace(/\n/g,'<br>');
+  const barsData=[
+    {label:'불안 지수',val:aP,color:'#f59e0b'},
+    {label:'회피 지수',val:vP,color:'#3b82f6'},
+    {label:'안정 지수',val:Math.max(0,100-Math.round((aP+vP)/2)),color:'#22c55e'},
   ];
-  const barsHTML = barsData.map(b=>`
+  document.getElementById('score-bars').innerHTML=barsData.map(b=>`
     <div class="score-item">
-      <div class="score-label-row">
-        <span class="score-name">${b.label}</span>
-        <span class="score-val" style="background:${b.color};">${b.val}%</span>
-      </div>
-      <div class="score-track">
-        <div class="score-fill" style="background:${b.color};width:0%" data-width="${b.val}%"></div>
-      </div>
-    </div>
-  `).join('');
-  document.getElementById('score-bars').innerHTML = barsHTML;
+      <div class="score-label-row"><span class="score-name">${b.label}</span><span class="score-val" style="background:${b.color};">${b.val}%</span></div>
+      <div class="score-track"><div class="score-fill" style="background:${b.color};width:0%" data-width="${b.val}%"></div></div>
+    </div>`).join('');
+  document.getElementById('traits-list').innerHTML=R.traits.map(t=>`<div class="trait-item"><span class="trait-icon">${t.icon}</span><span>${t.text}</span></div>`).join('');
+  document.getElementById('tips-list').innerHTML=R.tips.map((t,i)=>`<div class="tip-item"><div class="tip-num">${i+1}</div><div>${t}</div></div>`).join('');
 
-  // 특징
-  document.getElementById('traits-list').innerHTML = R.traits.map(t=>`
-    <div class="trait-item"><span class="trait-icon">${t.icon}</span><span>${t.text}</span></div>
-  `).join('');
-
-  // 팁
-  document.getElementById('tips-list').innerHTML = R.tips.map((t,i)=>`
-    <div class="tip-item"><div class="tip-num">${i+1}</div><div>${t}</div></div>
-  `).join('');
-
-  // 바 애니메이션
   setTimeout(()=>{
-    document.querySelectorAll('.score-fill').forEach(el=>{
-      el.style.width = el.dataset.width;
-    });
-  }, 400);
+    document.querySelectorAll('.score-fill').forEach(el=>{ el.style.width=el.dataset.width; });
+  },400);
 
-  window.scrollTo({top:0, behavior:'smooth'});
+  window.scrollTo({top:0,behavior:'smooth'});
+
+  // 결과 광고 동적 로드 (result-page block 후 500ms)
+  setTimeout(()=>{
+    loadAd('result-ad-50', 'DAN-6iw5gO4mKLgRJllI','320','50');
+    loadAd('result-ad-100','DAN-scTitgt243zKHDwP','320','100');
+  }, 500);
 }
 
-// =====================================================
-// 공유 / 저장
-// =====================================================
 function restartTest(){
   currentQ=0; answers=[]; selectedAnswer=null; resultType=null;
   document.getElementById('result-page').style.display='none';
@@ -640,36 +420,28 @@ function showToast(msg){
   t.textContent=msg; t.classList.add('show');
   setTimeout(()=>t.classList.remove('show'),2500);
 }
-
 function shareKakao(){
-  const R = RESULTS[resultType||'secure'];
-  const text = `나의 애착유형은 "${R.name}"이래요! ${R.sub} 💝\n너는 어떤 유형이야? 👇\n${location.href}`;
-  if(navigator.share){
-    navigator.share({title:`나의 애착유형은 ${R.name}!`, text, url:location.href});
-  } else {
-    copyLink();
-    showToast('💬 링크를 복사했어요!');
-  }
+  const R=RESULTS[resultType||'secure'];
+  const text=`나의 애착유형은 "${R.name}"이래요! ${R.sub} 💝\n너는 어떤 유형이야? 👇\n${location.href}`;
+  if(navigator.share){ navigator.share({title:`나의 애착유형은 ${R.name}!`,text,url:location.href}); }
+  else { copyLink(); showToast('💬 링크를 복사했어요!'); }
 }
 function shareInstagram(){ saveAsImage(); showToast('📸 이미지 저장 후 인스타에 올려보세요!'); }
 function shareX(){
-  const R = RESULTS[resultType||'secure'];
-  const txt = `나의 애착유형은 "${R.name}"! ${R.sub} 💝 너도 해봐 →`;
-  window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(txt+' '+location.href)}`,'_blank');
+  const R=RESULTS[resultType||'secure'];
+  window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(`나의 애착유형은 "${R.name}"! ${R.sub} 💝 너도 해봐 → ${location.href}`)}`,'_blank');
 }
 async function copyLink(){
   try{ await navigator.clipboard.writeText(location.href); showToast('🔗 링크가 복사되었어요!'); }
   catch{ showToast('🔗 링크를 복사해주세요!'); }
 }
 async function saveAsImage(){
-  const ov=document.getElementById('save-overlay');
-  ov.classList.add('show');
+  const ov=document.getElementById('save-overlay'); ov.classList.add('show');
   try{
     const canvas=await html2canvas(document.getElementById('save-wrap'),{scale:2,useCORS:true,backgroundColor:null,logging:false});
     const a=document.createElement('a');
     a.download=`애착유형_${RESULTS[resultType||'secure'].name}.png`;
-    a.href=canvas.toDataURL('image/png');
-    a.click();
+    a.href=canvas.toDataURL('image/png'); a.click();
     showToast('📥 이미지가 저장되었어요!');
   }catch(e){ showToast('⚠️ 저장 중 오류가 발생했어요.'); }
   finally{ ov.classList.remove('show'); }
